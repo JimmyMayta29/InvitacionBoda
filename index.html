@@ -1,0 +1,1312 @@
+<!DOCTYPE html>
+<html lang="es" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>¡Nos Casamos! Dhersy &amp; Dayana — 02.01.2027</title>
+  <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600&family=Great+Vibes&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+  <style>
+    :root {
+      --sage-light: #eef3ee;
+      --sage-mid: #7d967f;
+      --sage-dark: #435b46;
+      --sage-deep: #2c3e2e;
+      --cream-bg: #faf9f5;
+      --gold-accent: #b89758;
+    }
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: var(--cream-bg);
+      color: #2f3a30;
+      overflow-x: hidden;
+    }
+    .font-serif-elegant {
+      font-family: 'Cormorant Garamond', Georgia, serif;
+    }
+    .font-script {
+      font-family: 'Great Vibes', cursive;
+    }
+    /* Torn paper effect from Model 2 gallery */
+    .torn-photo-card {
+      position: relative;
+      clip-path: polygon(
+        0% 2%, 5% 0%, 12% 3%, 20% 1%, 28% 3%, 36% 0%, 45% 2%, 54% 0%, 63% 3%, 72% 1%, 81% 2%, 90% 0%, 96% 2%, 100% 1%,
+        99% 12%, 100% 25%, 98% 38%, 100% 52%, 99% 66%, 100% 80%, 98% 92%, 100% 98%,
+        94% 100%, 85% 98%, 76% 100%, 66% 98%, 56% 100%, 46% 98%, 36% 100%, 26% 98%, 16% 100%, 8% 98%, 0% 99%,
+        1% 86%, 0% 72%, 2% 58%, 0% 44%, 1% 30%, 0% 15%
+      );
+      transition: transform 0.35s ease, box-shadow 0.35s ease;
+    }
+    .torn-photo-card:hover {
+      transform: translateY(-4px) scale(1.01);
+    }
+    /* Heart pulse animation for audio button */
+    @keyframes pulseHeart {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.12); }
+    }
+    .heart-pulse {
+      animation: pulseHeart 1.8s infinite ease-in-out;
+    }
+    /* Floating botanical leaf sway */
+    @keyframes gentleSway {
+      0%, 100% { transform: rotate(0deg) translateY(0px); }
+      50% { transform: rotate(2.5deg) translateY(-3px); }
+    }
+    .leaf-sway {
+      animation: gentleSway 6s infinite ease-in-out;
+    }
+    .demo-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      font-size: 10px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      background-color: #fef3c7;
+      color: #92400e;
+      border: 1px solid #fcd34d;
+      padding: 2px 8px;
+      border-radius: 9999px;
+    }
+    body.hide-demo-badges .demo-badge {
+      display: none !important;
+    }
+  </style>
+</head>
+<body class="min-h-screen antialiased selection:bg-[#7d967f]/20">
+
+  <!-- Top Utility Bar for the Couple (Toggle Guest View / Customize Demo Data / Generate QR) -->
+  <header id="coupleToolbar" class="sticky top-0 z-40 bg-[#2c3e2e]/95 backdrop-blur-md text-white px-3 py-2.5 shadow-md border-b border-white/10">
+    <div class="max-w-4xl mx-auto flex flex-wrap items-center justify-between gap-2 text-xs">
+      <div class="flex items-center gap-2">
+        <span class="inline-block w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+        <span class="font-medium">Prototipo Modelo 2 (Eucalipto Botánico):</span>
+        <span class="text-emerald-200 hidden sm:inline">Dhersy &amp; Dayana · 02 Ene 2027</span>
+      </div>
+      <div class="flex flex-wrap items-center gap-1.5">
+        <button id="btnToggleBadges" type="button" onclick="toggleDemoBadges()" class="px-2.5 py-1 rounded-full bg-white/10 hover:bg-white/20 text-white transition flex items-center gap-1">
+          <span id="badgeToggleText">Ocultar etiquetas [Demo]</span>
+        </button>
+        <button id="btnOpenEditor" type="button" onclick="openModal('editorModal')" class="px-3 py-1 rounded-full bg-emerald-600 hover:bg-emerald-500 font-medium text-white transition shadow-sm">
+          ✏️ Editar Datos Demo
+        </button>
+        <button id="btnOpenQr" type="button" onclick="openModal('qrModal')" class="px-3 py-1 rounded-full bg-[#b89758] hover:bg-[#a38347] font-medium text-white transition shadow-sm">
+          📱 Código QR y GitHub
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Invitation Container (Mobile-First Botanical Card Stack like Canva Website Model 2) -->
+  <main class="max-w-xl mx-auto bg-[#faf9f5] shadow-2xl border-x border-[#e2e8e2] relative overflow-hidden">
+
+    <!-- Decorative Top Eucalyptus Corner SVGs -->
+    <div class="pointer-events-none select-none absolute top-0 left-0 w-44 h-44 opacity-85 z-10 leaf-sway">
+      <svg viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M10 180 C40 120, 90 60, 175 15" stroke="#5f7a61" stroke-width="2" fill="none"/>
+        <ellipse cx="45" cy="135" rx="22" ry="13" transform="rotate(-35 45 135)" fill="#7d967f" fill-opacity="0.75"/>
+        <ellipse cx="75" cy="105" rx="25" ry="14" transform="rotate(-25 75 105)" fill="#435b46" fill-opacity="0.8"/>
+        <ellipse cx="55" cy="90" rx="20" ry="12" transform="rotate(-65 55 90)" fill="#8fa891" fill-opacity="0.85"/>
+        <ellipse cx="110" cy="70" rx="24" ry="13" transform="rotate(-20 110 70)" fill="#7d967f" fill-opacity="0.75"/>
+        <ellipse cx="95" cy="50" rx="19" ry="11" transform="rotate(-60 95 50)" fill="#435b46" fill-opacity="0.7"/>
+        <ellipse cx="145" cy="38" rx="20" ry="11" transform="rotate(-15 145 38)" fill="#8fa891" fill-opacity="0.8"/>
+        <circle cx="88" cy="82" r="3.5" fill="#b89758"/>
+        <circle cx="128" cy="48" r="3" fill="#b89758"/>
+      </svg>
+    </div>
+    <div class="pointer-events-none select-none absolute top-0 right-0 w-44 h-44 opacity-85 z-10 leaf-sway" style="transform: scaleX(-1);">
+      <svg viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M10 180 C40 120, 90 60, 175 15" stroke="#5f7a61" stroke-width="2" fill="none"/>
+        <ellipse cx="45" cy="135" rx="22" ry="13" transform="rotate(-35 45 135)" fill="#7d967f" fill-opacity="0.75"/>
+        <ellipse cx="75" cy="105" rx="25" ry="14" transform="rotate(-25 75 105)" fill="#435b46" fill-opacity="0.8"/>
+        <ellipse cx="55" cy="90" rx="20" ry="12" transform="rotate(-65 55 90)" fill="#8fa891" fill-opacity="0.85"/>
+        <ellipse cx="110" cy="70" rx="24" ry="13" transform="rotate(-20 110 70)" fill="#7d967f" fill-opacity="0.75"/>
+        <ellipse cx="95" cy="50" rx="19" ry="11" transform="rotate(-60 95 50)" fill="#435b46" fill-opacity="0.7"/>
+        <ellipse cx="145" cy="38" rx="20" ry="11" transform="rotate(-15 145 38)" fill="#8fa891" fill-opacity="0.8"/>
+        <circle cx="88" cy="82" r="3.5" fill="#b89758"/>
+      </svg>
+    </div>
+
+    <!-- 1. HERO & AUDIO PLAYER SECTION (Model 2 Header) -->
+    <section id="inicio" class="pt-16 pb-12 px-6 text-center relative">
+      <p class="uppercase tracking-[0.28em] text-xs text-[#435b46] font-semibold mb-2">
+        Con gran alegría en nuestros corazones
+      </p>
+      <h1 class="font-serif-elegant italic text-3xl sm:text-4xl text-[#2c3e2e] font-semibold tracking-wide mb-3">
+        ¡Nos Casamos!
+      </h1>
+
+      <!-- Couple Script Names -->
+      <div class="my-4">
+        <h2 id="displayCoupleShort" class="font-script text-6xl sm:text-7xl text-[#3b523e] leading-tight py-1">
+          Dhersy &amp; Dayana
+        </h2>
+        <p class="font-serif-elegant text-base sm:text-lg text-[#526654] tracking-wide mt-1">
+          <span id="displayGroomFull">Dhersy Klisman Reyna Esteban</span>
+          <span class="mx-1.5 text-[#b89758]">&amp;</span>
+          <span id="displayBrideFull">Dayana Kristy Mayta Carhuancho</span>
+        </p>
+      </div>
+
+      <!-- Hero Photo with Torn Paper Frame -->
+      <div class="relative mx-auto max-w-md my-6">
+        <div class="torn-photo-card shadow-lg bg-white p-2">
+          <img
+            src="img/hero_couple.jpg"
+            alt="Dhersy y Dayana"
+            class="w-full h-72 sm:h-80 object-cover rounded-sm"
+          />
+        </div>
+      </div>
+
+      <!-- Interactive Music Player (Exact Model 2 Style: "Presiona el 💚 para escuchar nuestra canción") -->
+      <div class="mt-6 bg-white/90 border border-[#d6e0d6] rounded-2xl p-4 shadow-sm max-w-sm mx-auto">
+        <p class="font-serif-elegant italic text-lg text-[#2c3e2e] mb-2">
+          Presiona el 💚 para escuchar nuestra canción
+        </p>
+        <p id="songTitleDisplay" class="text-xs text-[#647a67] mb-3 tracking-wide">
+          🎵 Melodía Romántica de Boda (Piano &amp; Cuerdas)
+        </p>
+
+        <!-- Player Controls -->
+        <div class="flex items-center justify-center gap-5 my-2">
+          <button
+            id="btnRewindSong"
+            type="button"
+            onclick="restartMusic()"
+            aria-label="Rebobinar canción"
+            class="w-9 h-9 rounded-full bg-[#eef3ee] hover:bg-[#dce6dc] text-[#435b46] flex items-center justify-center transition"
+          >
+            ⏮
+          </button>
+
+          <button
+            id="btnToggleMusic"
+            type="button"
+            onclick="toggleMusic()"
+            aria-label="Reproducir o pausar nuestra canción"
+            class="w-14 h-14 rounded-full bg-[#eef3ee] hover:bg-[#e0ebe0] border-2 border-[#7d967f] shadow-md flex items-center justify-center text-2xl heart-pulse transition"
+          >
+            <span id="musicHeartIcon">💚</span>
+          </button>
+
+          <button
+            id="btnForwardSong"
+            type="button"
+            onclick="skipMusicNote()"
+            aria-label="Siguiente compás"
+            class="w-9 h-9 rounded-full bg-[#eef3ee] hover:bg-[#dce6dc] text-[#435b46] flex items-center justify-center transition"
+          >
+            ⏭
+          </button>
+        </div>
+
+        <!-- Progress Bar & Status -->
+        <div class="mt-3 px-2">
+          <div class="w-full h-1.5 bg-[#e3ebe3] rounded-full overflow-hidden">
+            <div id="musicProgressBar" class="h-full bg-[#435b46] transition-all duration-300" style="width: 0%;"></div>
+          </div>
+          <div class="flex justify-between items-center text-[11px] text-[#647a67] mt-1.5">
+            <span id="musicStatusText">En pausa · Toca el 💚 para reproducir</span>
+            <span id="musicTimeText">0:00</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Romantic Quote -->
+      <blockquote class="mt-8 px-4 font-serif-elegant italic text-xl text-[#435b46] leading-relaxed">
+        “El amor nunca se da por vencido, jamás pierde la fe, siempre tiene esperanzas y se mantiene firme en toda circunstancia.”
+      </blockquote>
+    </section>
+
+    <!-- Botanical Divider -->
+    <div class="flex items-center justify-center py-2 opacity-80">
+      <div class="h-px w-20 bg-[#b89758]/50"></div>
+      <span class="mx-3 text-[#435b46] text-lg">🌿</span>
+      <div class="h-px w-20 bg-[#b89758]/50"></div>
+    </div>
+
+    <!-- 2. BLESSING OF PARENTS & GODPARENTS (Bendición de Padres y Padrinos) -->
+    <section id="padres" class="py-10 px-6 text-center">
+      <p class="uppercase tracking-[0.22em] text-xs text-[#647a67] font-semibold mb-2">
+        Con la bendición de Dios y de
+      </p>
+      <h2 class="font-script text-5xl text-[#3b523e] mb-8">
+        Nuestros Padres
+      </h2>
+
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-5 max-w-lg mx-auto">
+        <!-- Groom's Parents -->
+        <div class="bg-white border border-[#dce5dc] rounded-2xl p-5 shadow-sm relative">
+          <div class="text-[#7d967f] text-sm mb-1">🌿</div>
+          <h3 class="font-serif-elegant italic text-lg font-semibold text-[#b89758] mb-2">
+            Padres del Novio
+          </h3>
+          <p id="displayGroomFather" class="font-serif-elegant text-xl text-[#2c3e2e] font-medium">
+            Yuri Esrom Reyna
+          </p>
+          <span class="demo-badge mt-0.5 mb-1">Confirmar 2.º apellido</span>
+          <p id="displayGroomMother" class="font-serif-elegant text-xl text-[#2c3e2e] font-medium mt-1">
+            Huga Alicia Esteban Villar
+          </p>
+        </div>
+
+        <!-- Bride's Parents -->
+        <div class="bg-white border border-[#dce5dc] rounded-2xl p-5 shadow-sm relative">
+          <div class="text-[#7d967f] text-sm mb-1">🌿</div>
+          <h3 class="font-serif-elegant italic text-lg font-semibold text-[#b89758] mb-2">
+            Padres de la Novia
+          </h3>
+          <p id="displayBrideFather" class="font-serif-elegant text-xl text-[#2c3e2e] font-medium">
+            Rubén Mayta Flores
+          </p>
+          <p id="displayBrideMother" class="font-serif-elegant text-xl text-[#2c3e2e] font-medium mt-2">
+            Elisa Carhuancho Briceño
+          </p>
+        </div>
+      </div>
+
+      <!-- Godparents (Demo Data) -->
+      <div class="mt-5 max-w-lg mx-auto bg-white/80 border border-[#dce5dc] rounded-2xl p-5 shadow-sm">
+        <div class="flex items-center justify-center gap-2 mb-2">
+          <h3 class="font-serif-elegant italic text-lg font-semibold text-[#b89758]">
+            Nuestros Padrinos de Religión y Aros
+          </h3>
+          <span class="demo-badge">Dato Demo</span>
+        </div>
+        <p id="displayGodparents" class="font-serif-elegant text-xl text-[#2c3e2e] font-medium">
+          Carlos Alberto Mendoza &amp; María Elena Gómez
+        </p>
+        <p class="text-xs text-[#647a67] mt-2">
+          Nos honran acompañándonos en este sacramento de amor
+        </p>
+      </div>
+    </section>
+
+    <!-- 3. DATE & REAL-TIME COUNTDOWN (Cuenta Regresiva) -->
+    <section id="cuenta-regresiva" class="py-12 px-6 bg-[#eef3ee] text-center relative border-y border-[#d6e2d6]">
+      <p class="uppercase tracking-[0.25em] text-xs text-[#435b46] font-semibold mb-2">
+        Reserva esta fecha especial
+      </p>
+      <h2 class="font-script text-5xl text-[#2c3e2e] mb-4">
+        El Gran Día
+      </h2>
+
+      <!-- Stylized Date Lockup -->
+      <div class="inline-flex items-center justify-center gap-4 sm:gap-6 bg-white px-6 py-4 rounded-2xl shadow-sm border border-[#d6e2d6] my-3">
+        <div class="text-center border-r border-[#d6e2d6] pr-4 sm:pr-6">
+          <span class="block text-xs uppercase tracking-widest text-[#647a67]">Sábado</span>
+          <span class="font-serif-elegant text-xl font-semibold text-[#2c3e2e]">10:00 A.M.</span>
+        </div>
+        <div class="text-center">
+          <span class="font-serif-elegant text-5xl font-bold text-[#3b523e] leading-none">02</span>
+          <span class="block text-xs uppercase tracking-[0.2em] text-[#b89758] font-bold mt-1">Enero</span>
+        </div>
+        <div class="text-center border-l border-[#d6e2d6] pl-4 sm:pl-6">
+          <span class="block text-xs uppercase tracking-widest text-[#647a67]">Año</span>
+          <span class="font-serif-elegant text-2xl font-semibold text-[#2c3e2e]">2027</span>
+        </div>
+      </div>
+
+      <!-- Countdown Clock (Faltan Días : Horas : Minutos : Segundos) -->
+      <p class="font-serif-elegant italic text-xl text-[#435b46] mt-6 mb-3">
+        Faltan para nuestro matrimonio:
+      </p>
+      <div class="grid grid-cols-4 gap-2.5 max-w-md mx-auto">
+        <div class="bg-white rounded-xl p-3 shadow-sm border border-[#d6e2d6]">
+          <span id="cdDays" class="font-serif-elegant text-3xl sm:text-4xl font-bold text-[#2c3e2e] block">00</span>
+          <span class="text-[11px] uppercase tracking-wider text-[#647a67]">Días</span>
+        </div>
+        <div class="bg-white rounded-xl p-3 shadow-sm border border-[#d6e2d6]">
+          <span id="cdHours" class="font-serif-elegant text-3xl sm:text-4xl font-bold text-[#2c3e2e] block">00</span>
+          <span class="text-[11px] uppercase tracking-wider text-[#647a67]">Horas</span>
+        </div>
+        <div class="bg-white rounded-xl p-3 shadow-sm border border-[#d6e2d6]">
+          <span id="cdMinutes" class="font-serif-elegant text-3xl sm:text-4xl font-bold text-[#2c3e2e] block">00</span>
+          <span class="text-[11px] uppercase tracking-wider text-[#647a67]">Minutos</span>
+        </div>
+        <div class="bg-white rounded-xl p-3 shadow-sm border border-[#d6e2d6]">
+          <span id="cdSeconds" class="font-serif-elegant text-3xl sm:text-4xl font-bold text-[#b89758] block">00</span>
+          <span class="text-[11px] uppercase tracking-wider text-[#647a67]">Segundos</span>
+        </div>
+      </div>
+
+      <div class="mt-6">
+        <button
+          id="btnAddCalendar"
+          type="button"
+          onclick="downloadCalendarReminder()"
+          class="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-[#435b46] hover:bg-[#2c3e2e] text-white text-xs uppercase tracking-wider font-medium transition shadow-sm"
+        >
+          📅 Agendar Recordatorio en mi Celular
+        </button>
+      </div>
+    </section>
+
+    <!-- 4. LOCATIONS & GOOGLE MAPS (Ceremonia y Recepción) -->
+    <section id="ubicaciones" class="py-12 px-6 text-center">
+      <p class="uppercase tracking-[0.22em] text-xs text-[#647a67] font-semibold mb-2">
+        Dónde y cuándo celebraremos
+      </p>
+      <h2 class="font-script text-5xl text-[#3b523e] mb-8">
+        Ubicaciones
+      </h2>
+
+      <div class="space-y-6 max-w-md mx-auto">
+        <!-- Religious Ceremony Card -->
+        <div class="bg-white rounded-2xl p-6 shadow-sm border border-[#dce5dc]">
+          <div class="w-14 h-14 rounded-full bg-[#eef3ee] text-[#435b46] flex items-center justify-center mx-auto mb-3">
+            <!-- Church SVG Icon -->
+            <svg class="w-7 h-7" fill="none" stroke="currentColor" stroke-width="1.6" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M12 3v4m-2-2h4m-7 7l7-5 7 5v9H5v-9z"/>
+              <path stroke-linecap="round" stroke-linejoin="round" d="M10 21v-5a2 2 0 114 0v5"/>
+            </svg>
+          </div>
+          <div class="flex items-center justify-center gap-2">
+            <h3 class="font-serif-elegant text-2xl font-bold text-[#2c3e2e]">
+              Ceremonia Religiosa
+            </h3>
+            <span class="demo-badge">Lugar Demo</span>
+          </div>
+          <p class="text-sm font-semibold text-[#b89758] mt-1">
+            Hora: <span id="displayCeremonyTime">10:00 A.M.</span>
+          </p>
+          <p id="displayCeremonyPlace" class="font-serif-elegant text-xl text-[#2c3e2e] mt-2 font-medium">
+            Iglesia Matriz Santa Fe de Jauja
+          </p>
+          <p id="displayCeremonyAddress" class="text-xs text-[#647a67] mt-1">
+            Plaza de Armas s/n, Centro Histórico (Referencia Demo)
+          </p>
+          <div class="mt-4">
+            <button
+              id="btnMapCeremony"
+              type="button"
+              onclick="openMapPreview('ceremony')"
+              class="inline-flex items-center gap-2 px-6 py-2.5 rounded-full bg-[#5f7a61] hover:bg-[#435b46] text-white text-xs uppercase tracking-widest font-semibold transition shadow-sm"
+            >
+              📍 Ver mapa
+            </button>
+          </div>
+        </div>
+
+        <!-- Reception Card -->
+        <div class="bg-white rounded-2xl p-6 shadow-sm border border-[#dce5dc]">
+          <div class="w-14 h-14 rounded-full bg-[#eef3ee] text-[#435b46] flex items-center justify-center mx-auto mb-3">
+            <!-- Champagne Glasses SVG Icon -->
+            <svg class="w-7 h-7" fill="none" stroke="currentColor" stroke-width="1.6" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M8 3h8l-1.5 7a3.5 3.5 0 01-5 0L8 3zM12 13v6m-3 0h6"/>
+            </svg>
+          </div>
+          <div class="flex items-center justify-center gap-2">
+            <h3 class="font-serif-elegant text-2xl font-bold text-[#2c3e2e]">
+              Recepción Social
+            </h3>
+            <span class="demo-badge">Lugar Demo</span>
+          </div>
+          <p class="text-sm font-semibold text-[#b89758] mt-1">
+            Hora: <span id="displayReceptionTime">12:00 P.M.</span>
+          </p>
+          <p id="displayReceptionPlace" class="font-serif-elegant text-xl text-[#2c3e2e] mt-2 font-medium">
+            Fundo &amp; Jardín Botánico “El Edén”
+          </p>
+          <p id="displayReceptionAddress" class="text-xs text-[#647a67] mt-1">
+            Av. Los Eucaliptos 450, Zona Campestre (Referencia Demo)
+          </p>
+          <div class="mt-4">
+            <button
+              id="btnMapReception"
+              type="button"
+              onclick="openMapPreview('reception')"
+              class="inline-flex items-center gap-2 px-6 py-2.5 rounded-full bg-[#5f7a61] hover:bg-[#435b46] text-white text-xs uppercase tracking-widest font-semibold transition shadow-sm"
+            >
+              📍 Ver mapa
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 5. VERTICAL TIMELINE / ITINERARIO (Línea de Tiempo Ilustrada) -->
+    <section id="itinerario" class="py-12 px-6 bg-[#eef3ee]/70 border-y border-[#d6e2d6]">
+      <div class="text-center mb-8">
+        <div class="flex items-center justify-center gap-2 mb-1">
+          <p class="uppercase tracking-[0.22em] text-xs text-[#647a67] font-semibold">
+            Minuto a minuto
+          </p>
+          <span class="demo-badge">Horarios Demo</span>
+        </div>
+        <h2 class="font-script text-5xl text-[#3b523e]">
+          Itinerario de Boda
+        </h2>
+      </div>
+
+      <div class="relative max-w-sm mx-auto">
+        <!-- Vertical Center Line -->
+        <div class="absolute left-1/2 top-2 bottom-2 w-0.5 bg-[#7d967f]/50 -translate-x-1/2"></div>
+
+        <!-- Step 1: 10:00 AM -->
+        <div class="relative flex items-center justify-between mb-8">
+          <div class="w-5/12 text-right pr-3">
+            <span class="text-xs font-bold text-[#b89758] tracking-wider">10:00 A.M.</span>
+            <h4 class="font-serif-elegant text-lg font-bold text-[#2c3e2e]">Ceremonia Religiosa</h4>
+            <p class="text-[11px] text-[#647a67]">El “Sí, acepto” ante Dios</p>
+          </div>
+          <div class="z-10 w-10 h-10 rounded-full bg-white border-2 border-[#5f7a61] flex items-center justify-center text-base shadow-sm">
+            💒
+          </div>
+          <div class="w-5/12 pl-3"></div>
+        </div>
+
+        <!-- Step 2: 12:00 PM -->
+        <div class="relative flex items-center justify-between mb-8">
+          <div class="w-5/12 pr-3"></div>
+          <div class="z-10 w-10 h-10 rounded-full bg-white border-2 border-[#5f7a61] flex items-center justify-center text-base shadow-sm">
+            🥂
+          </div>
+          <div class="w-5/12 text-left pl-3">
+            <span class="text-xs font-bold text-[#b89758] tracking-wider">12:00 P.M.</span>
+            <h4 class="font-serif-elegant text-lg font-bold text-[#2c3e2e]">Recepción y Brindis</h4>
+            <p class="text-[11px] text-[#647a67]">Bienvenida y fotos con los novios</p>
+          </div>
+        </div>
+
+        <!-- Step 3: 01:30 PM -->
+        <div class="relative flex items-center justify-between mb-8">
+          <div class="w-5/12 text-right pr-3">
+            <span class="text-xs font-bold text-[#b89758] tracking-wider">01:30 P.M.</span>
+            <h4 class="font-serif-elegant text-lg font-bold text-[#2c3e2e]">Almuerzo de Gala</h4>
+            <p class="text-[11px] text-[#647a67]">Banquete especial en familia</p>
+          </div>
+          <div class="z-10 w-10 h-10 rounded-full bg-white border-2 border-[#5f7a61] flex items-center justify-center text-base shadow-sm">
+            🍽️
+          </div>
+          <div class="w-5/12 pl-3"></div>
+        </div>
+
+        <!-- Step 4: 03:00 PM -->
+        <div class="relative flex items-center justify-between">
+          <div class="w-5/12 pr-3"></div>
+          <div class="z-10 w-10 h-10 rounded-full bg-white border-2 border-[#5f7a61] flex items-center justify-center text-base shadow-sm">
+            💃
+          </div>
+          <div class="w-5/12 text-left pl-3">
+            <span class="text-xs font-bold text-[#b89758] tracking-wider">03:00 P.M.</span>
+            <h4 class="font-serif-elegant text-lg font-bold text-[#2c3e2e]">Baile y Celebración</h4>
+            <p class="text-[11px] text-[#647a67]">¡A disfrutar hasta el anochecer!</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 6. DRESS CODE (Código de Vestimenta - Model 2) -->
+    <section id="vestimenta" class="py-12 px-6 text-center">
+      <div class="flex items-center justify-center gap-2 mb-1">
+        <p class="uppercase tracking-[0.22em] text-xs text-[#647a67] font-semibold">
+          Sugerencia de atuendo
+        </p>
+        <span class="demo-badge">Editable</span>
+      </div>
+      <h2 class="font-script text-5xl text-[#3b523e] mb-2">
+        Código de Vestimenta
+      </h2>
+      <p class="font-serif-elegant text-2xl font-bold tracking-[0.18em] text-[#b89758] uppercase mb-6">
+        Formal Elegante
+      </p>
+
+      <div class="grid grid-cols-2 gap-4 max-w-md mx-auto">
+        <div class="bg-white border border-[#dce5dc] rounded-2xl p-5 shadow-sm">
+          <div class="text-3xl mb-2">👗</div>
+          <h3 class="font-serif-elegant text-xl font-bold text-[#2c3e2e]">Damas</h3>
+          <p class="text-xs text-[#647a67] mt-1 leading-relaxed">
+            Vestido largo o midi elegante.<br/>
+            <span class="font-semibold text-[#435b46]">Colores reservados:</span> Blanco, marfil y verde eucalipto.
+          </p>
+        </div>
+        <div class="bg-white border border-[#dce5dc] rounded-2xl p-5 shadow-sm">
+          <div class="text-3xl mb-2">🤵</div>
+          <h3 class="font-serif-elegant text-xl font-bold text-[#2c3e2e]">Caballeros</h3>
+          <p class="text-xs text-[#647a67] mt-1 leading-relaxed">
+            Traje formal completo con camisa y corbata o michi.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- 7. PHOTO GALLERY WITH TORN PAPER BORDERS (Galería de Fotos - Model 2) -->
+    <section id="galeria" class="py-12 px-6 bg-[#eef3ee]/50 border-t border-[#d6e2d6] text-center">
+      <div class="flex items-center justify-center gap-2 mb-1">
+        <p class="uppercase tracking-[0.22em] text-xs text-[#647a67] font-semibold">
+          Nuestros momentos
+        </p>
+        <span class="demo-badge">Fotos Demo</span>
+      </div>
+      <h2 class="font-script text-5xl text-[#3b523e] mb-6">
+        Nuestro Amor
+      </h2>
+
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-6 max-w-md mx-auto">
+        <div class="torn-photo-card bg-white p-2.5 shadow-md">
+          <img
+            src="img/portrait_couple.jpg"
+            alt="Retrato romántico Dhersy y Dayana"
+            class="w-full h-72 object-cover"
+          />
+          <p class="font-serif-elegant italic text-sm text-[#435b46] mt-2">
+            Juntos para toda la vida
+          </p>
+        </div>
+        <div class="torn-photo-card bg-white p-2.5 shadow-md flex flex-col justify-between">
+          <img
+            src="img/rings_detail.jpg"
+            alt="Alianzas de matrimonio"
+            class="w-full h-72 object-cover"
+          />
+          <p class="font-serif-elegant italic text-sm text-[#435b46] mt-2">
+            02 · Enero · 2027
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- 8. GIFTS / LLUVIA DE SOBRES (Sugerencia de Regalos) -->
+    <section id="regalos" class="py-10 px-6 text-center">
+      <div class="max-w-md mx-auto bg-white border border-[#dce5dc] rounded-2xl p-6 shadow-sm">
+        <div class="text-3xl mb-2">🎁</div>
+        <div class="flex items-center justify-center gap-2">
+          <h2 class="font-script text-4xl text-[#3b523e]">
+            Detalle de Bodas
+          </h2>
+          <span class="demo-badge">Cuentas Demo</span>
+        </div>
+        <p class="text-xs text-[#647a67] mt-2 leading-relaxed">
+          Su presencia es nuestro mejor regalo. Si desean tener un detalle adicional con nosotros, pueden hacerlo mediante transferencia o lluvia de sobres:
+        </p>
+        <div class="mt-4">
+          <button
+            id="btnToggleGiftDetails"
+            type="button"
+            onclick="toggleGiftBox()"
+            class="px-5 py-2 rounded-full border border-[#5f7a61] text-[#435b46] hover:bg-[#eef3ee] text-xs font-semibold uppercase tracking-wider transition"
+          >
+            Ver números de cuenta / Yape
+          </button>
+        </div>
+
+        <div id="giftDetailsPanel" class="hidden mt-4 pt-4 border-t border-[#eef3ee] text-left text-xs space-y-2.5">
+          <div class="flex items-center justify-between bg-[#faf9f5] p-2.5 rounded-lg border border-[#e2e8e2]">
+            <div>
+              <span class="font-semibold text-[#2c3e2e] block">BCP Soles (Dhersy Reyna)</span>
+              <span id="accountBcpText" class="text-[#647a67] font-mono">191-00000000-0-00</span>
+            </div>
+            <button
+              id="btnCopyBcp"
+              type="button"
+              onclick="copyTextValue('191-00000000-0-00', 'Cuenta BCP copiada')"
+              class="px-2.5 py-1 rounded bg-[#eef3ee] hover:bg-[#dce6dc] text-[#2c3e2e] font-medium"
+            >
+              Copiar
+            </button>
+          </div>
+          <div class="flex items-center justify-between bg-[#faf9f5] p-2.5 rounded-lg border border-[#e2e8e2]">
+            <div>
+              <span class="font-semibold text-[#2c3e2e] block">Yape / Plin (Dayana Mayta)</span>
+              <span id="accountYapeText" class="text-[#647a67] font-mono">999 888 777</span>
+            </div>
+            <button
+              id="btnCopyYape"
+              type="button"
+              onclick="copyTextValue('999888777', 'Número de Yape copiado')"
+              class="px-2.5 py-1 rounded bg-[#eef3ee] hover:bg-[#dce6dc] text-[#2c3e2e] font-medium"
+            >
+              Copiar
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 9. RSVP CONFIRMATION & DIGITAL PASS (Confirmación de Asistencia) -->
+    <section id="confirmacion" class="py-12 px-6 bg-[#2c3e2e] text-white text-center relative">
+      <p class="uppercase tracking-[0.22em] text-xs text-emerald-200 font-semibold mb-1">
+        Esperamos contar contigo
+      </p>
+      <h2 class="font-script text-5xl text-white mb-3">
+        Confirmar Asistencia
+      </h2>
+      <p class="text-xs text-emerald-100/80 max-w-sm mx-auto mb-6">
+        Por favor confírmanos tu asistencia para organizar tu lugar reservado y generar tu pase digital.
+      </p>
+
+      <form id="rsvpForm" onsubmit="handleRsvpSubmit(event)" class="max-w-md mx-auto bg-white text-[#2f3a30] rounded-2xl p-6 shadow-xl text-left space-y-4">
+        <div>
+          <label for="guestNameInput" class="block text-xs font-semibold uppercase tracking-wider text-[#435b46] mb-1">
+            Nombre y Apellidos o Familia *
+          </label>
+          <input
+            id="guestNameInput"
+            type="text"
+            required
+            placeholder="Ej. Familia Mayta Carhuancho"
+            class="w-full px-3.5 py-2.5 rounded-xl border border-[#cbd5cb] text-sm focus:outline-none focus:border-[#435b46]"
+          />
+        </div>
+
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label for="guestAttendSelect" class="block text-xs font-semibold uppercase tracking-wider text-[#435b46] mb-1">
+              ¿Asistirás?
+            </label>
+            <select
+              id="guestAttendSelect"
+              class="w-full px-3 py-2.5 rounded-xl border border-[#cbd5cb] text-sm bg-white focus:outline-none focus:border-[#435b46]"
+            >
+              <option value="Sí, asistiré con mucha alegría">¡Sí, asistiré! 💚</option>
+              <option value="No podré asistir, les envío un abrazo">No podré asistir</option>
+            </select>
+          </div>
+
+          <div>
+            <label for="guestSeatsSelect" class="block text-xs font-semibold uppercase tracking-wider text-[#435b46] mb-1">
+              N.º de Pases
+            </label>
+            <select
+              id="guestSeatsSelect"
+              class="w-full px-3 py-2.5 rounded-xl border border-[#cbd5cb] text-sm bg-white focus:outline-none focus:border-[#435b46]"
+            >
+              <option value="1">1 persona</option>
+              <option value="2" selected>2 personas</option>
+              <option value="3">3 personas</option>
+              <option value="4">4 personas</option>
+              <option value="5">Familia (5)</option>
+            </select>
+          </div>
+        </div>
+
+        <div>
+          <label for="guestMessageInput" class="block text-xs font-semibold uppercase tracking-wider text-[#435b46] mb-1">
+            Dedicatoria o Mensaje para Dhersy &amp; Dayana
+          </label>
+          <textarea
+            id="guestMessageInput"
+            rows="2"
+            placeholder="¡Muchas felicidades en esta nueva etapa!"
+            class="w-full px-3.5 py-2 rounded-xl border border-[#cbd5cb] text-sm focus:outline-none focus:border-[#435b46]"
+          ></textarea>
+        </div>
+
+        <div class="pt-1 flex flex-col sm:flex-row gap-2.5">
+          <button
+            id="btnSubmitRsvp"
+            type="submit"
+            class="flex-1 py-3 px-4 rounded-xl bg-[#435b46] hover:bg-[#2c3e2e] text-white font-semibold text-xs uppercase tracking-wider transition shadow-md"
+          >
+            🎟️ Generar Pase y Confirmar
+          </button>
+          <button
+            id="btnWhatsappRsvp"
+            type="button"
+            onclick="sendWhatsappRsvp()"
+            class="py-3 px-4 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-semibold text-xs uppercase tracking-wider transition shadow-md"
+          >
+            💬 Enviar por WhatsApp
+          </button>
+        </div>
+      </form>
+
+      <!-- Generated Digital Pass Preview Card -->
+      <div id="digitalPassCard" class="hidden max-w-md mx-auto mt-6 bg-[#faf9f5] text-[#2c3e2e] rounded-2xl p-6 border-2 border-[#b89758] shadow-xl">
+        <p class="text-[11px] uppercase tracking-[0.25em] text-[#647a67] font-semibold">
+          Pase Oficial de Invitado
+        </p>
+        <h3 class="font-script text-4xl text-[#3b523e] mt-1">
+          Dhersy &amp; Dayana
+        </h3>
+        <p class="text-xs text-[#b89758] font-semibold">
+          Sábado, 02 de Enero de 2027 · 10:00 A.M.
+        </p>
+        <div class="my-4 py-3 px-4 bg-white rounded-xl border border-[#dce5dc]">
+          <p class="text-xs text-[#647a67]">Invitado(a) especial:</p>
+          <p id="passGuestName" class="font-serif-elegant text-2xl font-bold text-[#2c3e2e] mt-0.5">
+            Invitado Especial
+          </p>
+          <p id="passGuestSeats" class="text-xs font-semibold text-[#435b46] mt-1 uppercase tracking-wider">
+            Hemos reservado 2 lugares en tu honor
+          </p>
+        </div>
+        <p id="passGuestStatus" class="text-xs text-emerald-700 font-medium">
+          ✓ Confirmación registrada en lista de invitados
+        </p>
+      </div>
+
+      <footer class="mt-10 pt-6 border-t border-white/10 text-xs text-emerald-100/70">
+        <p class="font-script text-3xl text-white mb-1">Dhersy &amp; Dayana</p>
+        <p>02 de Enero de 2027 · ¡Te esperamos!</p>
+      </footer>
+    </section>
+  </main>
+
+  <!-- MODAL 1: EDIT DEMO DATA IN REAL TIME -->
+  <div id="editorModal" class="hidden fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4">
+    <div class="bg-white rounded-2xl max-w-lg w-full max-h-[90vh] overflow-y-auto p-6 shadow-2xl border border-[#dce5dc]">
+      <div class="flex items-center justify-between border-b pb-3 mb-4">
+        <h3 class="font-serif-elegant text-2xl font-bold text-[#2c3e2e]">
+          ✏️ Personalizar Datos de la Invitación
+        </h3>
+        <button id="btnCloseEditor" type="button" onclick="closeModal('editorModal')" class="w-8 h-8 rounded-full bg-gray-100 hover:bg-gray-200 text-gray-600 flex items-center justify-center">
+          ✕
+        </button>
+      </div>
+
+      <div class="space-y-3 text-xs">
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+          <div>
+            <label for="editGroomFather" class="font-semibold text-gray-700 block mb-1">Papá del Novio (completar apellido):</label>
+            <input id="editGroomFather" type="text" value="Yuri Esrom Reyna" class="w-full px-3 py-2 border rounded-lg" />
+          </div>
+          <div>
+            <label for="editGroomMother" class="font-semibold text-gray-700 block mb-1">Mamá del Novio:</label>
+            <input id="editGroomMother" type="text" value="Huga Alicia Esteban Villar" class="w-full px-3 py-2 border rounded-lg" />
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+          <div>
+            <label for="editBrideFather" class="font-semibold text-gray-700 block mb-1">Papá de la Novia:</label>
+            <input id="editBrideFather" type="text" value="Rubén Mayta Flores" class="w-full px-3 py-2 border rounded-lg" />
+          </div>
+          <div>
+            <label for="editBrideMother" class="font-semibold text-gray-700 block mb-1">Mamá de la Novia:</label>
+            <input id="editBrideMother" type="text" value="Elisa Carhuancho Briceño" class="w-full px-3 py-2 border rounded-lg" />
+          </div>
+        </div>
+
+        <div>
+          <label for="editGodparents" class="font-semibold text-gray-700 block mb-1">Padrinos (Demo):</label>
+          <input id="editGodparents" type="text" value="Carlos Alberto Mendoza & María Elena Gómez" class="w-full px-3 py-2 border rounded-lg" />
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+          <div>
+            <label for="editCeremonyPlace" class="font-semibold text-gray-700 block mb-1">Iglesia / Ceremonia (10:00 a.m.):</label>
+            <input id="editCeremonyPlace" type="text" value="Iglesia Matriz Santa Fe de Jauja" class="w-full px-3 py-2 border rounded-lg" />
+          </div>
+          <div>
+            <label for="editReceptionPlace" class="font-semibold text-gray-700 block mb-1">Local de Recepción:</label>
+            <input id="editReceptionPlace" type="text" value="Fundo & Jardín Botánico “El Edén”" class="w-full px-3 py-2 border rounded-lg" />
+          </div>
+        </div>
+
+        <div>
+          <label for="editWhatsappPhone" class="font-semibold text-gray-700 block mb-1">Número de WhatsApp para Confirmaciones (con código de país, ej. 51999888777):</label>
+          <input id="editWhatsappPhone" type="text" value="51999888777" class="w-full px-3 py-2 border rounded-lg font-mono" />
+        </div>
+      </div>
+
+      <div class="mt-6 flex justify-end gap-2">
+        <button id="btnCancelEdit" type="button" onclick="closeModal('editorModal')" class="px-4 py-2 rounded-lg border text-xs font-medium">
+          Cancelar
+        </button>
+        <button id="btnSaveEdit" type="button" onclick="applyCustomData()" class="px-5 py-2 rounded-lg bg-[#435b46] hover:bg-[#2c3e2e] text-white text-xs font-semibold">
+          Guardar Cambios en la Invitación
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL 2: QR CODE GENERATOR & GITHUB PAGES DEPLOYMENT GUIDE -->
+  <div id="qrModal" class="hidden fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4">
+    <div class="bg-white rounded-2xl max-w-lg w-full max-h-[90vh] overflow-y-auto p-6 shadow-2xl border border-[#dce5dc]">
+      <div class="flex items-center justify-between border-b pb-3 mb-4">
+        <h3 class="font-serif-elegant text-2xl font-bold text-[#2c3e2e]">
+          📱 Generador de Código QR y Despliegue en GitHub
+        </h3>
+        <button id="btnCloseQr" type="button" onclick="closeModal('qrModal')" class="w-8 h-8 rounded-full bg-gray-100 hover:bg-gray-200 text-gray-600 flex items-center justify-center">
+          ✕
+        </button>
+      </div>
+
+      <div class="space-y-4 text-xs text-gray-700">
+        <div>
+          <label for="qrUrlInput" class="font-semibold block mb-1">
+            Enlace web de tu invitación (URL de GitHub Pages o dominio):
+          </label>
+          <div class="flex gap-2">
+            <input
+              id="qrUrlInput"
+              type="url"
+              value="https://jimmymayta29.github.io/InvitacionBoda/"
+              class="flex-1 px-3 py-2 border rounded-lg font-mono text-xs"
+            />
+            <button
+              id="btnRegenerateQr"
+              type="button"
+              onclick="renderWeddingQr()"
+              class="px-3.5 py-2 rounded-lg bg-[#435b46] text-white font-semibold"
+            >
+              Actualizar QR
+            </button>
+          </div>
+        </div>
+
+        <!-- QR Container Card -->
+        <div class="bg-[#faf9f5] border border-[#dce5dc] rounded-2xl p-5 text-center">
+          <p class="font-script text-3xl text-[#3b523e]">Dhersy &amp; Dayana</p>
+          <p class="text-[11px] text-[#b89758] font-semibold uppercase tracking-widest mb-3">
+            02 · Enero · 2027 — Escanea tu Invitación
+          </p>
+          <div id="qrCodeBox" class="inline-flex items-center justify-center bg-white p-3 rounded-xl shadow-sm border border-[#e2e8e2] mx-auto"></div>
+          <p id="qrUrlCaption" class="text-[10px] font-mono text-gray-500 mt-2 break-all">
+            https://jimmymayta29.github.io/InvitacionBoda/
+          </p>
+          <div class="mt-3 flex flex-wrap justify-center gap-2">
+            <button id="btnDownloadQrPng" type="button" onclick="downloadQrImage()" class="px-3.5 py-1.5 rounded-lg bg-[#b89758] hover:bg-[#a38347] text-white text-xs font-semibold transition shadow-sm">
+              ⬇️ Descargar Imagen QR (.PNG)
+            </button>
+            <button id="btnDownloadIndexHtml" type="button" onclick="downloadSelfContainedIndex()" class="px-3.5 py-1.5 rounded-lg bg-[#435b46] hover:bg-[#2c3e2e] text-white text-xs font-semibold transition shadow-sm">
+              ⬇️ Descargar index.html listo para GitHub
+            </button>
+          </div>
+        </div>
+
+        <!-- GitHub Pages Quick Steps -->
+        <div class="bg-[#eef3ee] rounded-xl p-4 space-y-1.5">
+          <h4 class="font-semibold text-[#2c3e2e] text-sm">🚀 Cómo publicarla gratis en GitHub Pages:</h4>
+          <p>1. Crea un repositorio público en GitHub llamado <code class="bg-white px-1.5 py-0.5 rounded">InvitacionBoda</code>.</p>
+          <p>2. Sube este archivo renombrado como <code class="bg-white px-1.5 py-0.5 rounded">index.html</code>.</p>
+          <p>3. Ve a <strong>Settings → Pages</strong>, elige la rama <code class="bg-white px-1.5 py-0.5 rounded">main</code> y guarda. ¡Tu link quedará activo para escanear con el QR!</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL 3: INTERACTIVE MAP PREVIEW -->
+  <div id="mapModal" class="hidden fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4">
+    <div class="bg-white rounded-2xl max-w-md w-full p-6 shadow-2xl border border-[#dce5dc] text-center">
+      <div class="flex items-center justify-between border-b pb-3 mb-4">
+        <h3 id="mapModalTitle" class="font-serif-elegant text-2xl font-bold text-[#2c3e2e]">
+          Ubicación del Evento
+        </h3>
+        <button id="btnCloseMap" type="button" onclick="closeModal('mapModal')" class="w-8 h-8 rounded-full bg-gray-100 hover:bg-gray-200 text-gray-600 flex items-center justify-center">
+          ✕
+        </button>
+      </div>
+      <p id="mapModalPlace" class="font-serif-elegant text-xl font-semibold text-[#3b523e]"></p>
+      <p id="mapModalAddress" class="text-xs text-[#647a67] mt-1 mb-4"></p>
+      <div class="bg-[#eef3ee] rounded-xl p-6 border border-[#d6e2d6] mb-4">
+        <div class="text-4xl mb-2">🗺️</div>
+        <p class="text-xs text-[#435b46]">
+          Al presionar el botón inferior se abrirá la ruta exacta en <strong>Google Maps</strong> desde tu ubicación actual.
+        </p>
+      </div>
+      <div class="flex gap-2 justify-center">
+        <button id="btnCloseMapSecondary" type="button" onclick="closeModal('mapModal')" class="px-4 py-2.5 rounded-xl border text-xs font-medium">
+          Cerrar
+        </button>
+        <a
+          id="mapModalExternalLink"
+          href="https://www.google.com/maps/search/?api=1&query=Plaza+de+Armas+Jauja"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="px-5 py-2.5 rounded-xl bg-[#435b46] hover:bg-[#2c3e2e] text-white text-xs font-semibold uppercase tracking-wider"
+        >
+          Abrir en Google Maps ↗
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast Notification -->
+  <div id="toastNotification" class="hidden fixed bottom-5 left-1/2 -translate-x-1/2 z-50 bg-[#2c3e2e] text-white px-5 py-2.5 rounded-full shadow-lg text-xs font-medium border border-white/15">
+    <span id="toastMessage">Acción completada</span>
+  </div>
+
+  <script>
+    // --- STATE & CONFIGURATION ---
+    const weddingState = {
+      targetDateISO: '2027-01-02T10:00:00-05:00',
+      whatsappNumber: '51999888777',
+      ceremonyPlace: 'Iglesia Matriz Santa Fe de Jauja',
+      ceremonyAddress: 'Plaza de Armas s/n, Centro Histórico (Referencia Demo)',
+      receptionPlace: 'Fundo & Jardín Botánico “El Edén”',
+      receptionAddress: 'Av. Los Eucaliptos 450, Zona Campestre (Referencia Demo)',
+      isPlayingMusic: false,
+      audioCtx: null,
+      musicTimer: null,
+      noteIndex: 0,
+      elapsedSeconds: 0
+    };
+
+    // Romantic melody notes (frequencies in Hz for a warm wedding progression: C - G - Am - F)
+    const melodySequence = [
+      { freq: 523.25, dur: 0.7 }, // C5
+      { freq: 659.25, dur: 0.7 }, // E5
+      { freq: 783.99, dur: 1.0 }, // G5
+      { freq: 659.25, dur: 0.7 }, // E5
+      { freq: 587.33, dur: 0.7 }, // D5
+      { freq: 783.99, dur: 0.7 }, // G5
+      { freq: 880.00, dur: 1.0 }, // A5
+      { freq: 783.99, dur: 0.7 }, // G5
+      { freq: 698.46, dur: 0.7 }, // F5
+      { freq: 659.25, dur: 0.7 }, // E5
+      { freq: 587.33, dur: 0.8 }, // D5
+      { freq: 523.25, dur: 1.2 }  // C5
+    ];
+
+    // --- 1. REAL-TIME COUNTDOWN TO JAN 2, 2027 10:00 AM ---
+    function updateCountdown() {
+      const target = new Date(weddingState.targetDateISO).getTime();
+      const now = Date.now();
+      const diff = Math.max(0, target - now);
+
+      const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+      const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
+      const minutes = Math.floor((diff / (1000 * 60)) % 60);
+      const seconds = Math.floor((diff / 1000) % 60);
+
+      document.getElementById('cdDays').textContent = String(days).padStart(2, '0');
+      document.getElementById('cdHours').textContent = String(hours).padStart(2, '0');
+      document.getElementById('cdMinutes').textContent = String(minutes).padStart(2, '0');
+      document.getElementById('cdSeconds').textContent = String(seconds).padStart(2, '0');
+    }
+
+    // --- 2. WEB AUDIO SYNTHESIZED ROMANTIC PIANO PLAYER ---
+    function ensureAudioContext() {
+      if (!weddingState.audioCtx) {
+        const AudioContextClass = window.AudioContext || window.webkitAudioContext;
+        if (AudioContextClass) {
+          weddingState.audioCtx = new AudioContextClass();
+        }
+      }
+      if (weddingState.audioCtx && weddingState.audioCtx.state === 'suspended') {
+        weddingState.audioCtx.resume();
+      }
+    }
+
+    function playCurrentNote() {
+      if (!weddingState.isPlayingMusic || !weddingState.audioCtx) return;
+      const ctx = weddingState.audioCtx;
+      const note = melodySequence[weddingState.noteIndex % melodySequence.length];
+
+      const osc = ctx.createOscillator();
+      const subOsc = ctx.createOscillator();
+      const gain = ctx.createGain();
+
+      osc.type = 'sine';
+      osc.frequency.setValueAtTime(note.freq, ctx.currentTime);
+
+      subOsc.type = 'triangle';
+      subOsc.frequency.setValueAtTime(note.freq / 2, ctx.currentTime);
+
+      gain.gain.setValueAtTime(0.001, ctx.currentTime);
+      gain.gain.exponentialRampToValueAtTime(0.12, ctx.currentTime + 0.08);
+      gain.gain.exponentialRampToValueAtTime(0.0008, ctx.currentTime + note.dur + 0.35);
+
+      osc.connect(gain);
+      subOsc.connect(gain);
+      gain.connect(ctx.destination);
+
+      osc.start(ctx.currentTime);
+      subOsc.start(ctx.currentTime);
+      osc.stop(ctx.currentTime + note.dur + 0.4);
+      subOsc.stop(ctx.currentTime + note.dur + 0.4);
+
+      weddingState.noteIndex = (weddingState.noteIndex + 1) % melodySequence.length;
+      weddingState.elapsedSeconds += 1;
+
+      const progressPct = ((weddingState.noteIndex / melodySequence.length) * 100).toFixed(0);
+      document.getElementById('musicProgressBar').style.width = progressPct + '%';
+      const mins = Math.floor(weddingState.elapsedSeconds / 60);
+      const secs = String(weddingState.elapsedSeconds % 60).padStart(2, '0');
+      document.getElementById('musicTimeText').textContent = mins + ':' + secs;
+    }
+
+    function toggleMusic() {
+      ensureAudioContext();
+      weddingState.isPlayingMusic = !weddingState.isPlayingMusic;
+      const statusEl = document.getElementById('musicStatusText');
+      const iconEl = document.getElementById('musicHeartIcon');
+
+      if (weddingState.isPlayingMusic) {
+        statusEl.textContent = 'Reproduciendo nuestra canción... 💚';
+        iconEl.textContent = '⏸';
+        playCurrentNote();
+        if (weddingState.musicTimer) clearInterval(weddingState.musicTimer);
+        weddingState.musicTimer = setInterval(playCurrentNote, 850);
+      } else {
+        statusEl.textContent = 'En pausa · Toca el 💚 para reproducir';
+        iconEl.textContent = '💚';
+        if (weddingState.musicTimer) {
+          clearInterval(weddingState.musicTimer);
+          weddingState.musicTimer = null;
+        }
+      }
+    }
+
+    function restartMusic() {
+      weddingState.noteIndex = 0;
+      weddingState.elapsedSeconds = 0;
+      document.getElementById('musicProgressBar').style.width = '0%';
+      document.getElementById('musicTimeText').textContent = '0:00';
+      if (!weddingState.isPlayingMusic) {
+        toggleMusic();
+      } else {
+        playCurrentNote();
+      }
+      showToast('Canción reiniciada desde el principio');
+    }
+
+    function skipMusicNote() {
+      ensureAudioContext();
+      weddingState.noteIndex = (weddingState.noteIndex + 2) % melodySequence.length;
+      if (!weddingState.isPlayingMusic) {
+        toggleMusic();
+      } else {
+        playCurrentNote();
+      }
+    }
+
+    // --- 3. MAP PREVIEW MODAL ---
+    function openMapPreview(kind) {
+      const titleEl = document.getElementById('mapModalTitle');
+      const placeEl = document.getElementById('mapModalPlace');
+      const addrEl = document.getElementById('mapModalAddress');
+      const linkEl = document.getElementById('mapModalExternalLink');
+
+      if (kind === 'ceremony') {
+        titleEl.textContent = 'Mapa de la Ceremonia (10:00 A.M.)';
+        placeEl.textContent = weddingState.ceremonyPlace;
+        addrEl.textContent = weddingState.ceremonyAddress;
+        linkEl.href = 'https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent(weddingState.ceremonyPlace);
+      } else {
+        titleEl.textContent = 'Mapa de la Recepción (12:00 P.M.)';
+        placeEl.textContent = weddingState.receptionPlace;
+        addrEl.textContent = weddingState.receptionAddress;
+        linkEl.href = 'https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent(weddingState.receptionPlace);
+      }
+      openModal('mapModal');
+    }
+
+    // --- 4. GIFTS & CLIPBOARD ---
+    function toggleGiftBox() {
+      const panel = document.getElementById('giftDetailsPanel');
+      panel.classList.toggle('hidden');
+    }
+
+    function copyTextValue(text, message) {
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(text).then(function() {
+          showToast(message);
+        }).catch(function() {
+          fallbackCopy(text, message);
+        });
+      } else {
+        fallbackCopy(text, message);
+      }
+    }
+
+    function fallbackCopy(text, message) {
+      const temp = document.createElement('textarea');
+      temp.value = text;
+      document.body.appendChild(temp);
+      temp.select();
+      try {
+        document.execCommand('copy');
+        showToast(message);
+      } catch (err) {
+        showToast('Copia manual: ' + text);
+      }
+      document.body.removeChild(temp);
+    }
+
+    // --- 5. CALENDAR (.ICS) DOWNLOAD ---
+    function downloadCalendarReminder() {
+      const icsLines = [
+        'BEGIN:VCALENDAR',
+        'VERSION:2.0',
+        'BEGIN:VEVENT',
+        'DTSTART:20270102T150000Z',
+        'DTEND:20270102T230000Z',
+        'SUMMARY:Boda de Dhersy & Dayana',
+        'DESCRIPTION:Celebración de nuestro matrimonio. ¡Te esperamos a las 10:00 A.M.!',
+        'LOCATION:' + weddingState.ceremonyPlace,
+        'END:VEVENT',
+        'END:VCALENDAR'
+      ].join('\r\n');
+
+      const blob = new Blob([icsLines], { type: 'text/calendar;charset=utf-8' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'boda-dhersy-y-dayana.ics';
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+      showToast('Recordatorio de calendario descargado 📅');
+    }
+
+    // --- 6. RSVP & DIGITAL PASS ---
+    function handleRsvpSubmit(event) {
+      event.preventDefault();
+      const guestName = document.getElementById('guestNameInput').value.trim() || 'Invitado Especial';
+      const attend = document.getElementById('guestAttendSelect').value;
+      const seats = document.getElementById('guestSeatsSelect').value;
+
+      document.getElementById('passGuestName').textContent = guestName;
+      document.getElementById('passGuestSeats').textContent =
+        'Hemos reservado ' + seats + (seats === '1' ? ' lugar' : ' lugares') + ' en tu honor';
+      document.getElementById('passGuestStatus').textContent = '✓ ' + attend;
+
+      const passCard = document.getElementById('digitalPassCard');
+      passCard.classList.remove('hidden');
+      passCard.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      showToast('¡Tu Pase Digital ha sido generado con éxito!');
+    }
+
+    function sendWhatsappRsvp() {
+      const guestName = document.getElementById('guestNameInput').value.trim() || 'Un invitado';
+      const attend = document.getElementById('guestAttendSelect').value;
+      const seats = document.getElementById('guestSeatsSelect').value;
+      const msg = document.getElementById('guestMessageInput').value.trim();
+
+      const text =
+        '¡Hola Dhersy y Dayana! 💚\n' +
+        'Soy *' + guestName + '*.\n' +
+        'Confirmación para su boda (02/01/2027 - 10:00 a.m.): ' + attend + '\n' +
+        'Pases confirmados: ' + seats + '\n' +
+        (msg ? 'Mensaje: ' + msg : '');
+
+      const waUrl = 'https://wa.me/' + weddingState.whatsappNumber + '?text=' + encodeURIComponent(text);
+      window.open(waUrl, '_blank', 'noopener,noreferrer');
+    }
+
+    // --- 7. CUSTOMIZE DEMO DATA & QR CODE ---
+    function toggleDemoBadges() {
+      document.body.classList.toggle('hide-demo-badges');
+      const hidden = document.body.classList.contains('hide-demo-badges');
+      document.getElementById('badgeToggleText').textContent = hidden
+        ? 'Mostrar etiquetas [Demo]'
+        : 'Ocultar etiquetas [Demo]';
+      showToast(hidden ? 'Modo Vista Invitado activado' : 'Etiquetas Demo visibles');
+    }
+
+    function openModal(modalId) {
+      document.getElementById(modalId).classList.remove('hidden');
+      if (modalId === 'qrModal') {
+        renderWeddingQr();
+      }
+    }
+
+    function closeModal(modalId) {
+      document.getElementById(modalId).classList.add('hidden');
+    }
+
+    function applyCustomData() {
+      const groomFather = document.getElementById('editGroomFather').value.trim();
+      const groomMother = document.getElementById('editGroomMother').value.trim();
+      const brideFather = document.getElementById('editBrideFather').value.trim();
+      const brideMother = document.getElementById('editBrideMother').value.trim();
+      const godparents = document.getElementById('editGodparents').value.trim();
+      const ceremonyPlace = document.getElementById('editCeremonyPlace').value.trim();
+      const receptionPlace = document.getElementById('editReceptionPlace').value.trim();
+      const whatsapp = document.getElementById('editWhatsappPhone').value.trim();
+
+      if (groomFather) document.getElementById('displayGroomFather').textContent = groomFather;
+      if (groomMother) document.getElementById('displayGroomMother').textContent = groomMother;
+      if (brideFather) document.getElementById('displayBrideFather').textContent = brideFather;
+      if (brideMother) document.getElementById('displayBrideMother').textContent = brideMother;
+      if (godparents) document.getElementById('displayGodparents').textContent = godparents;
+      if (ceremonyPlace) {
+        weddingState.ceremonyPlace = ceremonyPlace;
+        document.getElementById('displayCeremonyPlace').textContent = ceremonyPlace;
+      }
+      if (receptionPlace) {
+        weddingState.receptionPlace = receptionPlace;
+        document.getElementById('displayReceptionPlace').textContent = receptionPlace;
+      }
+      if (whatsapp) {
+        weddingState.whatsappNumber = whatsapp.replace(/\D/g, '');
+      }
+
+      closeModal('editorModal');
+      showToast('¡Datos actualizados en la invitación!');
+    }
+
+    function renderWeddingQr() {
+      const url = document.getElementById('qrUrlInput').value.trim() || 'https://jimmymayta29.github.io/InvitacionBoda/';
+      document.getElementById('qrUrlCaption').textContent = url;
+      const box = document.getElementById('qrCodeBox');
+      box.innerHTML = '';
+      if (typeof QRCode !== 'undefined') {
+        new QRCode(box, {
+          text: url,
+          width: 160,
+          height: 160,
+          colorDark: '#2c3e2e',
+          colorLight: '#ffffff'
+        });
+      } else {
+        box.textContent = 'QR listo para: ' + url;
+      }
+    }
+
+    function downloadQrImage() {
+      const box = document.getElementById('qrCodeBox');
+      const img = box.querySelector('img');
+      const canvas = box.querySelector('canvas');
+      let dataUrl = '';
+      if (canvas) {
+        dataUrl = canvas.toDataURL('image/png');
+      } else if (img && img.src) {
+        dataUrl = img.src;
+      }
+      if (!dataUrl) {
+        showToast('Primero genera el código QR');
+        return;
+      }
+      const a = document.createElement('a');
+      a.href = dataUrl;
+      a.download = 'QR-Boda-Dhersy-y-Dayana.png';
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      showToast('Código QR descargado en PNG');
+    }
+
+    function downloadSelfContainedIndex() {
+      const htmlContent = '<!DOCTYPE html>\n' + document.documentElement.outerHTML;
+      const blob = new Blob([htmlContent], { type: 'text/html;charset=utf-8' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'index.html';
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+      showToast('Archivo index.html descargado para subir a GitHub');
+    }
+
+    function showToast(msg) {
+      const toast = document.getElementById('toastNotification');
+      document.getElementById('toastMessage').textContent = msg;
+      toast.classList.remove('hidden');
+      setTimeout(function() {
+        toast.classList.add('hidden');
+      }, 2800);
+    }
+
+    // Initialize countdown on load
+    window.addEventListener('DOMContentLoaded', function() {
+      updateCountdown();
+      setInterval(updateCountdown, 1000);
+    });
+  </script>
+</body>
+</html>
