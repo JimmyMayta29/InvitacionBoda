@@ -4,8 +4,6 @@ Repositorio oficial de la invitación virtual interactiva de **Dhersy Klisman Re
 
 - **Fecha del matrimonio:** Sábado, 2 de enero de 2027
 - **Hora:** 10:00 A.M.
+- **Lugar:** MINISTERIO EN HONOR AL REY DESDE HUANCAYO (Huancayo, Junín)
+- **Ubicación en Google Maps:** https://maps.app.goo.gl/xi9sdxCRa1xg1XcS6?g_st=aw
 - **Enlace desplegado (GitHub Pages):** https://jimmymayta29.github.io/InvitacionBoda/
-
-## Estructura de archivos
-- `index.html`: Página web principal interactiva (con música, cuenta regresiva, mapas, pase digital y confirmación por WhatsApp).
-- `img/`: Fotografías optimizadas para carga rápida en móviles.
