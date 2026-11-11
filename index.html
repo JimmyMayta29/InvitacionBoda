@@ -11,17 +11,19 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
   <style>
     :root {
-      --sage-light: #eef3ee;
-      --sage-mid: #7d967f;
-      --sage-dark: #435b46;
-      --sage-deep: #2c3e2e;
-      --cream-bg: #faf9f5;
-      --gold-accent: #b89758;
+      --navy-slate: #465369;
+      --navy-deep: #1e2b45;
+      --navy-dark: #151f33;
+      --dusty-blue: #748ba0;
+      --alabaster: #f4f4f2;
+      --soft-blush: #faf3f3;
+      --gold-wax: #d4af37;
+      --gold-deep: #b68d2c;
     }
     body {
       font-family: 'Inter', sans-serif;
-      background-color: var(--cream-bg);
-      color: #2f3a30;
+      background-color: var(--alabaster);
+      color: #1e2b45;
       overflow-x: hidden;
     }
     .font-serif-elegant {
@@ -30,36 +32,76 @@
     .font-script {
       font-family: 'Great Vibes', cursive;
     }
-    /* Torn paper effect from Model 2 gallery */
+
+    /* Interactive Navy Envelope & Gold Wax Seal (Model 1: Samantha & Nicolás style) */
+    #envelopeOverlay {
+      transition: opacity 0.85s ease, visibility 0.85s ease;
+    }
+    #envelopeOverlay.envelope-opened {
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+    }
+    .envelope-flap-top {
+      clip-path: polygon(0 0, 100% 0, 50% 62%);
+      background: linear-gradient(180deg, #526079 0%, #3d495e 100%);
+      transform-origin: top center;
+      transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+      filter: drop-shadow(0 12px 18px rgba(10, 18, 32, 0.45));
+    }
+    .envelope-opening .envelope-flap-top {
+      transform: rotateX(175deg);
+    }
+    .wax-seal-btn {
+      background: radial-gradient(circle at 32% 30%, #f7df8b 0%, #d4af37 48%, #9e781d 88%, #7c5c10 100%);
+      box-shadow:
+        0 10px 25px rgba(12, 20, 35, 0.55),
+        inset 0 2px 5px rgba(255, 250, 220, 0.8),
+        inset 0 -4px 8px rgba(90, 62, 8, 0.7);
+      transition: transform 0.35s ease, box-shadow 0.35s ease;
+    }
+    .wax-seal-btn:hover {
+      transform: scale(1.07);
+    }
+    .envelope-opening .wax-seal-btn {
+      transform: scale(0.2) rotate(25deg);
+      opacity: 0;
+    }
+
+    /* Subtle watercolor mist effect behind floral corners */
+    .watercolor-mist {
+      background:
+        radial-gradient(circle at 85% 10%, rgba(116, 139, 160, 0.22) 0%, transparent 48%),
+        radial-gradient(circle at 12% 18%, rgba(70, 83, 105, 0.14) 0%, transparent 42%),
+        radial-gradient(circle at 50% 55%, rgba(250, 243, 243, 0.65) 0%, transparent 60%);
+    }
+
+    /* Photo frame styling */
     .torn-photo-card {
       position: relative;
-      clip-path: polygon(
-        0% 2%, 5% 0%, 12% 3%, 20% 1%, 28% 3%, 36% 0%, 45% 2%, 54% 0%, 63% 3%, 72% 1%, 81% 2%, 90% 0%, 96% 2%, 100% 1%,
-        99% 12%, 100% 25%, 98% 38%, 100% 52%, 99% 66%, 100% 80%, 98% 92%, 100% 98%,
-        94% 100%, 85% 98%, 76% 100%, 66% 98%, 56% 100%, 46% 98%, 36% 100%, 26% 98%, 16% 100%, 8% 98%, 0% 99%,
-        1% 86%, 0% 72%, 2% 58%, 0% 44%, 1% 30%, 0% 15%
-      );
+      border-radius: 14px;
       transition: transform 0.35s ease, box-shadow 0.35s ease;
     }
     .torn-photo-card:hover {
       transform: translateY(-4px) scale(1.01);
     }
-    /* Heart pulse animation for audio button */
-    @keyframes pulseHeart {
+
+    @keyframes pulseSeal {
       0%, 100% { transform: scale(1); }
-      50% { transform: scale(1.12); }
+      50% { transform: scale(1.06); }
     }
     .heart-pulse {
-      animation: pulseHeart 1.8s infinite ease-in-out;
+      animation: pulseSeal 2s infinite ease-in-out;
     }
-    /* Floating botanical leaf sway */
+
     @keyframes gentleSway {
       0%, 100% { transform: rotate(0deg) translateY(0px); }
-      50% { transform: rotate(2.5deg) translateY(-3px); }
+      50% { transform: rotate(1.8deg) translateY(-3px); }
     }
     .leaf-sway {
       animation: gentleSway 6s infinite ease-in-out;
     }
+
     .demo-badge {
       display: inline-flex;
       align-items: center;
@@ -68,9 +110,9 @@
       font-weight: 600;
       text-transform: uppercase;
       letter-spacing: 0.06em;
-      background-color: #fef3c7;
-      color: #92400e;
-      border: 1px solid #fcd34d;
+      background-color: #e6eef6;
+      color: #1e2b45;
+      border: 1px solid #b5c7d9;
       padding: 2px 8px;
       border-radius: 9999px;
     }
@@ -79,99 +121,183 @@
     }
   </style>
 </head>
-<body class="min-h-screen antialiased selection:bg-[#7d967f]/20">
+<body class="min-h-screen antialiased selection:bg-[#748ba0]/25">
 
-  <!-- Top Utility Bar for the Couple (Toggle Guest View / Customize Demo Data / Generate QR) -->
-  <header id="coupleToolbar" class="sticky top-0 z-40 bg-[#2c3e2e]/95 backdrop-blur-md text-white px-3 py-2.5 shadow-md border-b border-white/10">
+  <!-- INTERACTIVE ENVELOPE OVERLAY (Model 1: Navy Slate Envelope + Gold Wax Seal) -->
+  <div id="envelopeOverlay" class="fixed inset-0 z-50 bg-[#3b475c] flex flex-col items-center justify-between overflow-hidden select-none">
+    <!-- Subtle texture vignette -->
+    <div class="absolute inset-0 bg-gradient-to-b from-[#4c5a73]/90 via-[#3b475c] to-[#283244] pointer-events-none"></div>
+
+    <!-- Top Envelope Flap with Script Names -->
+    <div class="relative w-full max-w-xl h-[56vh] flex flex-col items-center justify-start pt-12 sm:pt-16 z-10 envelope-flap-top px-4 text-center">
+      <p class="uppercase tracking-[0.28em] text-[10px] text-white/75 mb-2">
+        Nuestra Boda
+      </p>
+      <h2 class="font-script text-5xl sm:text-6xl text-white drop-shadow-md leading-tight">
+        Dhersy
+      </h2>
+      <span class="font-script text-3xl text-[#f3d478] my-0.5">&amp;</span>
+      <h2 class="font-script text-5xl sm:text-6xl text-white drop-shadow-md leading-tight">
+        Dayana
+      </h2>
+    </div>
+
+    <!-- Center Gold Wax Seal Button -->
+    <div class="relative z-20 -mt-20 sm:-mt-24 flex flex-col items-center">
+      <button
+        id="btnOpenEnvelopeSeal"
+        type="button"
+        onclick="openWeddingEnvelope()"
+        aria-label="Abrir sobre de invitación"
+        class="w-28 h-28 sm:w-32 sm:h-32 rounded-full wax-seal-btn flex flex-col items-center justify-center border-4 border-[#e8c766]/60 heart-pulse cursor-pointer relative"
+      >
+        <!-- Inner embossed ring & botanical sprig -->
+        <div class="w-20 h-20 sm:w-24 sm:h-24 rounded-full border border-[#8c6712]/45 flex items-center justify-center shadow-inner">
+          <svg class="w-11 h-11 text-[#705009]" viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M32 52 C32 36, 32 22, 32 12" stroke-linecap="round"/>
+            <path d="M32 40 C24 38, 20 32, 22 26 C28 28, 32 34, 32 40 Z" fill="currentColor" fill-opacity="0.25"/>
+            <path d="M32 32 C40 30, 44 24, 42 18 C36 20, 32 26, 32 32 Z" fill="currentColor" fill-opacity="0.25"/>
+            <path d="M32 24 C25 22, 22 17, 24 12 C29 14, 32 19, 32 24 Z" fill="currentColor" fill-opacity="0.25"/>
+          </svg>
+        </div>
+        <!-- Small wax droplet accent -->
+        <span class="w-3 h-3 rounded-full bg-[#d4af37] absolute -bottom-1 right-2 shadow"></span>
+      </button>
+      <p class="mt-4 text-xs uppercase tracking-[0.25em] text-[#f5deb3] font-medium animate-pulse">
+        ✨ Toca el sello dorado para abrir ✨
+      </p>
+    </div>
+
+    <!-- Bottom Date on Envelope -->
+    <div class="relative z-10 pb-10 text-center">
+      <p class="font-serif-elegant tracking-[0.3em] text-lg sm:text-xl text-white/90 font-medium">
+        02.01.2027
+      </p>
+      <p class="text-[11px] uppercase tracking-[0.2em] text-white/60 mt-1">
+        Jauja, Perú
+      </p>
+    </div>
+  </div>
+
+  <!-- Top Utility Bar for the Couple -->
+  <header id="coupleToolbar" class="sticky top-0 z-40 bg-[#1e2b45]/95 backdrop-blur-md text-white px-3 py-2.5 shadow-md border-b border-white/10">
     <div class="max-w-4xl mx-auto flex flex-wrap items-center justify-between gap-2 text-xs">
       <div class="flex items-center gap-2">
-        <span class="inline-block w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
-        <span class="font-medium">Invitación Oficial (Eucalipto Botánico):</span>
-        <span class="text-emerald-200 hidden sm:inline">Dhersy &amp; Dayana · 02 Ene 2027</span>
+        <span class="inline-block w-2 h-2 rounded-full bg-[#d4af37] animate-pulse"></span>
+        <span class="font-medium">Invitación Oficial (Azul Marino &amp; Dorado):</span>
+        <span class="text-sky-200 hidden sm:inline">Dhersy &amp; Dayana · 02 Ene 2027</span>
       </div>
       <div class="flex flex-wrap items-center gap-1.5">
+        <button id="btnReplayEnvelope" type="button" onclick="replayWeddingEnvelope()" class="px-2.5 py-1 rounded-full bg-white/15 hover:bg-white/25 text-white transition">
+          ✉️ Ver Sobre
+        </button>
         <button id="btnToggleBadges" type="button" onclick="toggleDemoBadges()" class="px-2.5 py-1 rounded-full bg-white/10 hover:bg-white/20 text-white transition flex items-center gap-1">
           <span id="badgeToggleText">Ocultar etiquetas [Demo]</span>
         </button>
-        <button id="btnOpenEditor" type="button" onclick="openModal('editorModal')" class="px-3 py-1 rounded-full bg-emerald-600 hover:bg-emerald-500 font-medium text-white transition shadow-sm">
+        <button id="btnOpenEditor" type="button" onclick="openModal('editorModal')" class="px-3 py-1 rounded-full bg-[#465369] hover:bg-[#5a6a85] border border-white/20 font-medium text-white transition shadow-sm">
           ✏️ Editar Datos Demo
         </button>
-        <button id="btnOpenQr" type="button" onclick="openModal('qrModal')" class="px-3 py-1 rounded-full bg-[#b89758] hover:bg-[#a38347] font-medium text-white transition shadow-sm">
+        <button id="btnOpenQr" type="button" onclick="openModal('qrModal')" class="px-3 py-1 rounded-full bg-[#b68d2c] hover:bg-[#9e781d] font-medium text-white transition shadow-sm">
           📱 Código QR y GitHub
         </button>
       </div>
     </div>
   </header>
 
-  <!-- Main Invitation Container (Mobile-First Botanical Card Stack like Canva Website Model 2) -->
-  <main class="max-w-xl mx-auto bg-[#faf9f5] shadow-2xl border-x border-[#e2e8e2] relative overflow-hidden">
+  <!-- Main Invitation Container (Navy Blue, White Roses, Dusty Blue & Gold Elegance) -->
+  <main class="max-w-xl mx-auto bg-[#faf9f7] watercolor-mist shadow-2xl border-x border-[#d8e0e8] relative overflow-hidden">
 
-    <!-- Decorative Top Eucalyptus Corner SVGs -->
-    <div class="pointer-events-none select-none absolute top-0 left-0 w-44 h-44 opacity-85 z-10 leaf-sway">
-      <svg viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path d="M10 180 C40 120, 90 60, 175 15" stroke="#5f7a61" stroke-width="2" fill="none"/>
-        <ellipse cx="45" cy="135" rx="22" ry="13" transform="rotate(-35 45 135)" fill="#7d967f" fill-opacity="0.75"/>
-        <ellipse cx="75" cy="105" rx="25" ry="14" transform="rotate(-25 75 105)" fill="#435b46" fill-opacity="0.8"/>
-        <ellipse cx="55" cy="90" rx="20" ry="12" transform="rotate(-65 55 90)" fill="#8fa891" fill-opacity="0.85"/>
-        <ellipse cx="110" cy="70" rx="24" ry="13" transform="rotate(-20 110 70)" fill="#7d967f" fill-opacity="0.75"/>
-        <ellipse cx="95" cy="50" rx="19" ry="11" transform="rotate(-60 95 50)" fill="#435b46" fill-opacity="0.7"/>
-        <ellipse cx="145" cy="38" rx="20" ry="11" transform="rotate(-15 145 38)" fill="#8fa891" fill-opacity="0.8"/>
-        <circle cx="88" cy="82" r="3.5" fill="#b89758"/>
-        <circle cx="128" cy="48" r="3" fill="#b89758"/>
-      </svg>
-    </div>
-    <div class="pointer-events-none select-none absolute top-0 right-0 w-44 h-44 opacity-85 z-10 leaf-sway" style="transform: scaleX(-1);">
-      <svg viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path d="M10 180 C40 120, 90 60, 175 15" stroke="#5f7a61" stroke-width="2" fill="none"/>
-        <ellipse cx="45" cy="135" rx="22" ry="13" transform="rotate(-35 45 135)" fill="#7d967f" fill-opacity="0.75"/>
-        <ellipse cx="75" cy="105" rx="25" ry="14" transform="rotate(-25 75 105)" fill="#435b46" fill-opacity="0.8"/>
-        <ellipse cx="55" cy="90" rx="20" ry="12" transform="rotate(-65 55 90)" fill="#8fa891" fill-opacity="0.85"/>
-        <ellipse cx="110" cy="70" rx="24" ry="13" transform="rotate(-20 110 70)" fill="#7d967f" fill-opacity="0.75"/>
-        <ellipse cx="95" cy="50" rx="19" ry="11" transform="rotate(-60 95 50)" fill="#435b46" fill-opacity="0.7"/>
-        <ellipse cx="145" cy="38" rx="20" ry="11" transform="rotate(-15 145 38)" fill="#8fa891" fill-opacity="0.8"/>
-        <circle cx="88" cy="82" r="3.5" fill="#b89758"/>
+    <!-- Decorative Top Navy & White Floral Corner SVGs (Matching Reference Image 1 & 2) -->
+    <div class="pointer-events-none select-none absolute top-0 left-0 w-48 h-48 z-10 leaf-sway">
+      <svg viewBox="0 0 220 220" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <!-- Navy & Dusty Blue Foliage -->
+        <path d="M5 190 C35 120, 95 55, 190 10" stroke="#465369" stroke-width="2" fill="none"/>
+        <ellipse cx="42" cy="142" rx="24" ry="13" transform="rotate(-38 42 142)" fill="#465369" fill-opacity="0.85"/>
+        <ellipse cx="78" cy="112" rx="26" ry="14" transform="rotate(-25 78 112)" fill="#748ba0" fill-opacity="0.8"/>
+        <ellipse cx="118" cy="68" rx="25" ry="13" transform="rotate(-18 118 68)" fill="#1e2b45" fill-opacity="0.85"/>
+        <ellipse cx="152" cy="36" rx="22" ry="11" transform="rotate(-12 152 36)" fill="#748ba0" fill-opacity="0.75"/>
+        <!-- White Rose 1 -->
+        <circle cx="58" cy="64" r="24" fill="#ffffff" stroke="#d8e0e8" stroke-width="1.5"/>
+        <circle cx="58" cy="64" r="16" fill="#f9f6f2" stroke="#e2dcd3" stroke-width="1.2"/>
+        <circle cx="58" cy="64" r="8" fill="#efe6d5"/>
+        <circle cx="58" cy="64" r="3" fill="#d4af37"/>
+        <!-- Navy Rose 2 -->
+        <circle cx="32" cy="102" r="18" fill="#1e2b45"/>
+        <circle cx="32" cy="102" r="11" fill="#2c3e63"/>
+        <circle cx="32" cy="102" r="4" fill="#d4af37"/>
+        <!-- White Rose 3 -->
+        <circle cx="96" cy="40" r="17" fill="#ffffff" stroke="#d8e0e8" stroke-width="1.2"/>
+        <circle cx="96" cy="40" r="10" fill="#f4efe6"/>
+        <circle cx="96" cy="40" r="3" fill="#d4af37"/>
       </svg>
     </div>
 
-    <!-- 1. HERO & AUDIO PLAYER SECTION (Model 2 Header with Real Couple Photo) -->
-    <section id="inicio" class="pt-16 pb-12 px-6 text-center relative">
-      <p class="uppercase tracking-[0.28em] text-xs text-[#435b46] font-semibold mb-2">
-        Con gran alegría en nuestros corazones
-      </p>
-      <h1 class="font-serif-elegant italic text-3xl sm:text-4xl text-[#2c3e2e] font-semibold tracking-wide mb-3">
+    <div class="pointer-events-none select-none absolute top-0 right-0 w-48 h-48 z-10 leaf-sway" style="transform: scaleX(-1);">
+      <svg viewBox="0 0 220 220" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M5 190 C35 120, 95 55, 190 10" stroke="#465369" stroke-width="2" fill="none"/>
+        <ellipse cx="42" cy="142" rx="24" ry="13" transform="rotate(-38 42 142)" fill="#465369" fill-opacity="0.85"/>
+        <ellipse cx="78" cy="112" rx="26" ry="14" transform="rotate(-25 78 112)" fill="#748ba0" fill-opacity="0.8"/>
+        <ellipse cx="118" cy="68" rx="25" ry="13" transform="rotate(-18 118 68)" fill="#1e2b45" fill-opacity="0.85"/>
+        <circle cx="58" cy="64" r="24" fill="#ffffff" stroke="#d8e0e8" stroke-width="1.5"/>
+        <circle cx="58" cy="64" r="16" fill="#f9f6f2" stroke="#e2dcd3" stroke-width="1.2"/>
+        <circle cx="58" cy="64" r="3" fill="#d4af37"/>
+        <circle cx="32" cy="102" r="18" fill="#1e2b45"/>
+        <circle cx="32" cy="102" r="11" fill="#2c3e63"/>
+        <circle cx="32" cy="102" r="4" fill="#d4af37"/>
+      </svg>
+    </div>
+
+    <!-- 1. HERO, BIBLICAL VERSE, MONOGRAM D|D & AUDIO PLAYER -->
+    <section id="inicio" class="pt-20 pb-12 px-6 text-center relative">
+      <!-- Biblical Verse from CorelDRAW Card (1 Corintios 13:7) & Model 1 (Eclesiastés 4:9-10) -->
+      <blockquote class="max-w-md mx-auto font-serif-elegant italic text-lg sm:text-xl text-[#1e2b45] leading-relaxed px-2">
+        “El amor nunca se da por vencido, jamás pierde la fe, siempre tiene esperanzas y se mantiene firme en toda circunstancia.”
+        <footer class="not-italic font-semibold text-sm text-[#465369] mt-1 tracking-wide">
+          1 Corintios 13:7
+        </footer>
+      </blockquote>
+
+      <!-- Monogram D | D (Matching S | N from Reference Image 1) -->
+      <div class="my-6 flex items-center justify-center gap-5">
+        <span class="font-serif-elegant text-5xl sm:text-6xl font-normal text-[#1e2b45] tracking-widest">D</span>
+        <span class="h-14 w-px bg-[#b68d2c]"></span>
+        <span class="font-serif-elegant text-5xl sm:text-6xl font-normal text-[#1e2b45] tracking-widest">D</span>
+      </div>
+
+      <h1 class="font-serif-elegant text-xl sm:text-2xl text-[#1e2b45] font-semibold tracking-[0.28em] uppercase mb-2">
         ¡Nos Casamos!
       </h1>
 
       <!-- Couple Script Names -->
-      <div class="my-4">
-        <h2 id="displayCoupleShort" class="font-script text-6xl sm:text-7xl text-[#3b523e] leading-tight py-1">
-          Dhersy &amp; Dayana
+      <div class="my-3">
+        <h2 id="displayCoupleShort" class="font-script text-6xl sm:text-7xl text-[#1e2b45] leading-tight py-1">
+          Dhersy <span class="text-[#b68d2c]">&amp;</span> Dayana
         </h2>
-        <p class="font-serif-elegant text-base sm:text-lg text-[#526654] tracking-wide mt-1">
+        <p class="font-serif-elegant text-base sm:text-lg text-[#465369] tracking-wide mt-1 font-medium">
           <span id="displayGroomFull">Dhersy Klisman Reyna Esteban</span>
-          <span class="mx-1.5 text-[#b89758]">&amp;</span>
+          <span class="mx-1.5 text-[#b68d2c]">&amp;</span>
           <span id="displayBrideFull">Dayana Kristy Mayta Carhuancho</span>
         </p>
       </div>
 
-      <!-- Hero Photo with Torn Paper Frame (Real Uploaded Photo) -->
+      <!-- Hero Photo with Navy & Gold Accent Frame -->
       <div class="relative mx-auto max-w-md my-6">
-        <div class="torn-photo-card shadow-lg bg-white p-2">
+        <div class="torn-photo-card shadow-xl bg-white p-2.5 border border-[#d8e0e8]">
           <img
             src="img/novios_formal.jpg"
             alt="Dhersy y Dayana"
-            class="w-full h-72 sm:h-80 object-cover rounded-sm"
+            class="w-full h-72 sm:h-80 object-cover rounded-lg"
           />
         </div>
       </div>
 
-      <!-- Interactive Music Player (Exact Model 2 Style: "Presiona el 💚 para escuchar nuestra canción") -->
-      <div class="mt-6 bg-white/90 border border-[#d6e0d6] rounded-2xl p-4 shadow-sm max-w-sm mx-auto">
-        <p class="font-serif-elegant italic text-lg text-[#2c3e2e] mb-2">
-          Presiona el 💚 para escuchar nuestra canción
+      <!-- Interactive Music Player -->
+      <div class="mt-6 bg-white/95 border border-[#cdd8e4] rounded-2xl p-4 shadow-md max-w-sm mx-auto">
+        <p class="font-serif-elegant italic text-lg text-[#1e2b45] mb-1">
+          Nuestra Canción de Boda
         </p>
-        <p id="songTitleDisplay" class="text-xs text-[#647a67] mb-3 tracking-wide">
-          🎵 Melodía Romántica de Boda (Piano &amp; Cuerdas)
+        <p id="songTitleDisplay" class="text-xs text-[#465369] mb-3 tracking-wide">
+          🎵 Melodía Eclesiástica &amp; Cuerdas Románticas
         </p>
 
         <!-- Player Controls -->
@@ -181,7 +307,7 @@
             type="button"
             onclick="restartMusic()"
             aria-label="Rebobinar canción"
-            class="w-9 h-9 rounded-full bg-[#eef3ee] hover:bg-[#dce6dc] text-[#435b46] flex items-center justify-center transition"
+            class="w-9 h-9 rounded-full bg-[#eef2f6] hover:bg-[#dbe4ee] text-[#1e2b45] flex items-center justify-center transition"
           >
             ⏮
           </button>
@@ -191,9 +317,9 @@
             type="button"
             onclick="toggleMusic()"
             aria-label="Reproducir o pausar nuestra canción"
-            class="w-14 h-14 rounded-full bg-[#eef3ee] hover:bg-[#e0ebe0] border-2 border-[#7d967f] shadow-md flex items-center justify-center text-2xl heart-pulse transition"
+            class="w-14 h-14 rounded-full bg-[#1e2b45] hover:bg-[#2c3e63] border-2 border-[#d4af37] shadow-md flex items-center justify-center text-2xl text-white heart-pulse transition"
           >
-            <span id="musicHeartIcon">💚</span>
+            <span id="musicHeartIcon">💙</span>
           </button>
 
           <button
@@ -201,7 +327,7 @@
             type="button"
             onclick="skipMusicNote()"
             aria-label="Siguiente compás"
-            class="w-9 h-9 rounded-full bg-[#eef3ee] hover:bg-[#dce6dc] text-[#435b46] flex items-center justify-center transition"
+            class="w-9 h-9 rounded-full bg-[#eef2f6] hover:bg-[#dbe4ee] text-[#1e2b45] flex items-center justify-center transition"
           >
             ⏭
           </button>
@@ -209,185 +335,199 @@
 
         <!-- Progress Bar & Status -->
         <div class="mt-3 px-2">
-          <div class="w-full h-1.5 bg-[#e3ebe3] rounded-full overflow-hidden">
-            <div id="musicProgressBar" class="h-full bg-[#435b46] transition-all duration-300" style="width: 0%;"></div>
+          <div class="w-full h-1.5 bg-[#e2e8f0] rounded-full overflow-hidden">
+            <div id="musicProgressBar" class="h-full bg-[#1e2b45] transition-all duration-300" style="width: 0%;"></div>
           </div>
-          <div class="flex justify-between items-center text-[11px] text-[#647a67] mt-1.5">
-            <span id="musicStatusText">En pausa · Toca el 💚 para reproducir</span>
+          <div class="flex justify-between items-center text-[11px] text-[#465369] mt-1.5">
+            <span id="musicStatusText">Toca el 💙 para reproducir música</span>
             <span id="musicTimeText">0:00</span>
           </div>
         </div>
       </div>
-
-      <!-- Romantic Quote -->
-      <blockquote class="mt-8 px-4 font-serif-elegant italic text-xl text-[#435b46] leading-relaxed">
-        “El amor nunca se da por vencido, jamás pierde la fe, siempre tiene esperanzas y se mantiene firme en toda circunstancia.”
-      </blockquote>
     </section>
 
-    <!-- Botanical Divider -->
-    <div class="flex items-center justify-center py-2 opacity-80">
-      <div class="h-px w-20 bg-[#b89758]/50"></div>
-      <span class="mx-3 text-[#435b46] text-lg">🌿</span>
-      <div class="h-px w-20 bg-[#b89758]/50"></div>
+    <!-- Gold & Navy Divider -->
+    <div class="flex items-center justify-center py-2">
+      <div class="h-px w-24 bg-[#b68d2c]/60"></div>
+      <span class="mx-3 text-[#b68d2c] text-base">✦</span>
+      <div class="h-px w-24 bg-[#b68d2c]/60"></div>
     </div>
 
-    <!-- 2. BLESSING OF PARENTS & GODPARENTS (Bendición de Padres y Padrinos) -->
+    <!-- 2. BLESSING OF PARENTS & GODPARENTS (Exact Text from CorelDRAW Card image_b20706.jpg) -->
     <section id="padres" class="py-10 px-6 text-center">
-      <p class="uppercase tracking-[0.22em] text-xs text-[#647a67] font-semibold mb-2">
-        Con la bendición de Dios y de
+      <p class="font-serif-elegant text-xl sm:text-2xl text-[#1e2b45] font-medium mb-6">
+        Con la bendición de Dios y de nuestros padres:
       </p>
-      <h2 class="font-script text-5xl text-[#3b523e] mb-8">
+      <h2 class="font-script text-5xl text-[#1e2b45] mb-8">
         Nuestros Padres
       </h2>
 
       <div class="grid grid-cols-1 sm:grid-cols-2 gap-5 max-w-lg mx-auto">
         <!-- Groom's Parents -->
-        <div class="bg-white border border-[#dce5dc] rounded-2xl p-5 shadow-sm relative">
-          <div class="text-[#7d967f] text-sm mb-1">🌿</div>
-          <h3 class="font-serif-elegant italic text-lg font-semibold text-[#b89758] mb-2">
+        <div class="bg-white border border-[#cdd8e4] rounded-2xl p-5 shadow-sm relative">
+          <div class="text-[#b68d2c] text-xs uppercase tracking-widest font-semibold mb-2">
             Padres del Novio
-          </h3>
-          <p id="displayGroomFather" class="font-serif-elegant text-xl text-[#2c3e2e] font-medium">
-            Yuri Esrom Reyna
+          </div>
+          <p id="displayGroomFather" class="font-serif-elegant italic text-2xl text-[#1e2b45] font-semibold">
+            Yuri Esrom Reyna Cárdenas
           </p>
-          <span class="demo-badge mt-0.5 mb-1">Confirmar 2.º apellido</span>
-          <p id="displayGroomMother" class="font-serif-elegant text-xl text-[#2c3e2e] font-medium mt-1">
+          <p id="displayGroomMother" class="font-serif-elegant italic text-2xl text-[#1e2b45] font-semibold mt-1.5">
             Huga Alicia Esteban Villar
           </p>
         </div>
 
         <!-- Bride's Parents -->
-        <div class="bg-white border border-[#dce5dc] rounded-2xl p-5 shadow-sm relative">
-          <div class="text-[#7d967f] text-sm mb-1">🌿</div>
-          <h3 class="font-serif-elegant italic text-lg font-semibold text-[#b89758] mb-2">
+        <div class="bg-white border border-[#cdd8e4] rounded-2xl p-5 shadow-sm relative">
+          <div class="text-[#b68d2c] text-xs uppercase tracking-widest font-semibold mb-2">
             Padres de la Novia
-          </h3>
-          <p id="displayBrideFather" class="font-serif-elegant text-xl text-[#2c3e2e] font-medium">
+          </div>
+          <p id="displayBrideFather" class="font-serif-elegant italic text-2xl text-[#1e2b45] font-semibold">
             Rubén Mayta Flores
           </p>
-          <p id="displayBrideMother" class="font-serif-elegant text-xl text-[#2c3e2e] font-medium mt-2">
+          <p id="displayBrideMother" class="font-serif-elegant italic text-2xl text-[#1e2b45] font-semibold mt-1.5">
             Elisa Carhuancho Briceño
           </p>
         </div>
       </div>
 
-      <!-- Godparents (Demo Data) -->
-      <div class="mt-5 max-w-lg mx-auto bg-white/80 border border-[#dce5dc] rounded-2xl p-5 shadow-sm">
-        <div class="flex items-center justify-center gap-2 mb-2">
-          <h3 class="font-serif-elegant italic text-lg font-semibold text-[#b89758]">
-            Nuestros Padrinos de Religión y Aros
-          </h3>
-          <span class="demo-badge">Dato Demo</span>
+      <!-- Official Invitation Phrase from Card -->
+      <div class="mt-8 mb-6 max-w-md mx-auto">
+        <p class="font-serif-elegant text-xl sm:text-2xl text-[#1e2b45] leading-relaxed">
+          Tienen el agrado de invitar a Ud. y familia al<br/>
+          <strong class="font-bold text-[#1e2b45] tracking-wide">Matrimonio Eclesiástico</strong>
+        </p>
+      </div>
+
+      <!-- Official Godparents from CorelDRAW Card (Eduardo Escalera Mandujano & Gimena Soto Carhuancho) -->
+      <div class="mt-6 max-w-lg mx-auto bg-white border border-[#cdd8e4] rounded-2xl p-6 shadow-sm">
+        <h3 class="font-serif-elegant italic text-2xl font-semibold text-[#b68d2c] mb-2">
+          Padrinos:
+        </h3>
+        <div id="displayGodparents" class="space-y-1">
+          <p class="font-serif-elegant italic text-2xl text-[#1e2b45] font-semibold">
+            Eduardo Escalera Mandujano
+          </p>
+          <p class="font-serif-elegant italic text-2xl text-[#1e2b45] font-semibold">
+            Gimena Soto Carhuancho
+          </p>
         </div>
-        <p id="displayGodparents" class="font-serif-elegant text-xl text-[#2c3e2e] font-medium">
-          Carlos Alberto Mendoza &amp; María Elena Gómez
-        </p>
-        <p class="text-xs text-[#647a67] mt-2">
-          Nos honran acompañándonos en este sacramento de amor
-        </p>
       </div>
     </section>
 
-    <!-- 3. DATE & REAL-TIME COUNTDOWN (Cuenta Regresiva) -->
-    <section id="cuenta-regresiva" class="py-12 px-6 bg-[#eef3ee] text-center relative border-y border-[#d6e2d6]">
-      <p class="uppercase tracking-[0.25em] text-xs text-[#435b46] font-semibold mb-2">
+    <!-- 3. DATE & REAL-TIME COUNTDOWN (Exact Gold Line + Hearts Lockup from image_b20706.jpg) -->
+    <section id="cuenta-regresiva" class="py-12 px-6 bg-[#1e2b45] text-white text-center relative border-y-2 border-[#d4af37]/60">
+      <p class="uppercase tracking-[0.25em] text-xs text-[#f3d478] font-semibold mb-2">
         Reserva esta fecha especial
       </p>
-      <h2 class="font-script text-5xl text-[#2c3e2e] mb-4">
+      <h2 class="font-script text-5xl text-white mb-6">
         El Gran Día
       </h2>
 
-      <!-- Stylized Date Lockup -->
-      <div class="inline-flex items-center justify-center gap-4 sm:gap-6 bg-white px-6 py-4 rounded-2xl shadow-sm border border-[#d6e2d6] my-3">
-        <div class="text-center border-r border-[#d6e2d6] pr-4 sm:pr-6">
-          <span class="block text-xs uppercase tracking-widest text-[#647a67]">Sábado</span>
-          <span class="font-serif-elegant text-xl font-semibold text-[#2c3e2e]">10:00 A.M.</span>
+      <!-- Stylized Date Lockup Matching CorelDRAW Gold Lines & Hearts: 02 Enero 2027 | 10:00 a.m. -->
+      <div class="max-w-md mx-auto bg-[#faf9f7] text-[#1e2b45] px-6 py-5 rounded-2xl shadow-lg border-2 border-[#d4af37]">
+        <!-- Top Gold Bar with Heart -->
+        <div class="flex items-center justify-center gap-2 mb-3">
+          <div class="h-0.5 flex-1 bg-[#b68d2c]"></div>
+          <span class="text-[#b68d2c] text-sm">♥</span>
+          <div class="h-0.5 flex-1 bg-[#b68d2c]"></div>
         </div>
-        <div class="text-center">
-          <span class="font-serif-elegant text-5xl font-bold text-[#3b523e] leading-none">02</span>
-          <span class="block text-xs uppercase tracking-[0.2em] text-[#b89758] font-bold mt-1">Enero</span>
+
+        <div class="flex items-center justify-center gap-5 sm:gap-8">
+          <div class="flex items-center gap-2.5">
+            <span class="font-serif-elegant text-5xl sm:text-6xl font-bold text-[#1e2b45] leading-none">02</span>
+            <div class="text-left leading-tight">
+              <span class="block font-serif-elegant text-xl sm:text-2xl font-semibold text-[#1e2b45]">Enero</span>
+              <span class="block font-serif-elegant text-xl sm:text-2xl font-semibold text-[#1e2b45]">2027</span>
+            </div>
+          </div>
+
+          <div class="h-12 w-0.5 bg-[#b68d2c]"></div>
+
+          <div class="text-center">
+            <span class="font-serif-elegant text-4xl sm:text-5xl font-bold text-[#1e2b45] leading-none">10:00</span>
+            <span class="font-serif-elegant text-lg sm:text-xl font-semibold text-[#465369] ml-0.5">a.m.</span>
+          </div>
         </div>
-        <div class="text-center border-l border-[#d6e2d6] pl-4 sm:pl-6">
-          <span class="block text-xs uppercase tracking-widest text-[#647a67]">Año</span>
-          <span class="font-serif-elegant text-2xl font-semibold text-[#2c3e2e]">2027</span>
+
+        <!-- Bottom Gold Bar with Heart -->
+        <div class="flex items-center justify-center gap-2 mt-3">
+          <div class="h-0.5 flex-1 bg-[#b68d2c]"></div>
+          <span class="text-[#b68d2c] text-sm">♥</span>
+          <div class="h-0.5 flex-1 bg-[#b68d2c]"></div>
         </div>
       </div>
 
       <!-- Countdown Clock (Faltan Días : Horas : Minutos : Segundos) -->
-      <p class="font-serif-elegant italic text-xl text-[#435b46] mt-6 mb-3">
+      <p class="font-serif-elegant italic text-xl text-sky-100 mt-7 mb-3">
         Faltan para nuestro matrimonio:
       </p>
       <div class="grid grid-cols-4 gap-2.5 max-w-md mx-auto">
-        <div class="bg-white rounded-xl p-3 shadow-sm border border-[#d6e2d6]">
-          <span id="cdDays" class="font-serif-elegant text-3xl sm:text-4xl font-bold text-[#2c3e2e] block">00</span>
-          <span class="text-[11px] uppercase tracking-wider text-[#647a67]">Días</span>
+        <div class="bg-[#2a3b5c] rounded-xl p-3 shadow-md border border-[#d4af37]/40">
+          <span id="cdDays" class="font-serif-elegant text-3xl sm:text-4xl font-bold text-white block">00</span>
+          <span class="text-[11px] uppercase tracking-wider text-sky-200">Días</span>
         </div>
-        <div class="bg-white rounded-xl p-3 shadow-sm border border-[#d6e2d6]">
-          <span id="cdHours" class="font-serif-elegant text-3xl sm:text-4xl font-bold text-[#2c3e2e] block">00</span>
-          <span class="text-[11px] uppercase tracking-wider text-[#647a67]">Horas</span>
+        <div class="bg-[#2a3b5c] rounded-xl p-3 shadow-md border border-[#d4af37]/40">
+          <span id="cdHours" class="font-serif-elegant text-3xl sm:text-4xl font-bold text-white block">00</span>
+          <span class="text-[11px] uppercase tracking-wider text-sky-200">Horas</span>
         </div>
-        <div class="bg-white rounded-xl p-3 shadow-sm border border-[#d6e2d6]">
-          <span id="cdMinutes" class="font-serif-elegant text-3xl sm:text-4xl font-bold text-[#2c3e2e] block">00</span>
-          <span class="text-[11px] uppercase tracking-wider text-[#647a67]">Minutos</span>
+        <div class="bg-[#2a3b5c] rounded-xl p-3 shadow-md border border-[#d4af37]/40">
+          <span id="cdMinutes" class="font-serif-elegant text-3xl sm:text-4xl font-bold text-white block">00</span>
+          <span class="text-[11px] uppercase tracking-wider text-sky-200">Minutos</span>
         </div>
-        <div class="bg-white rounded-xl p-3 shadow-sm border border-[#d6e2d6]">
-          <span id="cdSeconds" class="font-serif-elegant text-3xl sm:text-4xl font-bold text-[#b89758] block">00</span>
-          <span class="text-[11px] uppercase tracking-wider text-[#647a67]">Segundos</span>
+        <div class="bg-[#2a3b5c] rounded-xl p-3 shadow-md border border-[#d4af37]/40">
+          <span id="cdSeconds" class="font-serif-elegant text-3xl sm:text-4xl font-bold text-[#f3d478] block">00</span>
+          <span class="text-[11px] uppercase tracking-wider text-sky-200">Segundos</span>
         </div>
       </div>
 
-      <div class="mt-6">
+      <div class="mt-7">
         <button
           id="btnAddCalendar"
           type="button"
           onclick="downloadCalendarReminder()"
-          class="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-[#435b46] hover:bg-[#2c3e2e] text-white text-xs uppercase tracking-wider font-medium transition shadow-sm"
+          class="inline-flex items-center gap-2 px-6 py-2.5 rounded-full bg-[#d4af37] hover:bg-[#b68d2c] text-[#151f33] text-xs uppercase tracking-wider font-bold transition shadow-md"
         >
           📅 Agendar Recordatorio en mi Celular
         </button>
       </div>
     </section>
 
-    <!-- 4. LOCATIONS & GOOGLE MAPS (Ceremonia Oficial en Huancayo y Recepción) -->
+    <!-- 4. LOCATIONS, GOOGLE MAPS & MINISTERIO EVANGÉLICO (From image_b20706.jpg) -->
     <section id="ubicaciones" class="py-12 px-6 text-center">
-      <p class="uppercase tracking-[0.22em] text-xs text-[#647a67] font-semibold mb-2">
+      <p class="uppercase tracking-[0.22em] text-xs text-[#465369] font-semibold mb-2">
         Dónde y cuándo celebraremos
       </p>
-      <h2 class="font-script text-5xl text-[#3b523e] mb-8">
-        Ubicaciones
+      <h2 class="font-script text-5xl text-[#1e2b45] mb-8">
+        Lugar de Celebración
       </h2>
 
       <div class="space-y-6 max-w-md mx-auto">
-        <!-- Religious Ceremony Card (Official Updated Location) -->
-        <div class="bg-white rounded-2xl p-6 shadow-sm border border-[#dce5dc]">
-          <div class="w-14 h-14 rounded-full bg-[#eef3ee] text-[#435b46] flex items-center justify-center mx-auto mb-3">
-            <!-- Church SVG Icon -->
+        <!-- Main Venue Card: Local de Recepciones “Rodriguez” - Av. Jorge Chávez N° 304 - Jauja -->
+        <div class="bg-white rounded-2xl p-6 shadow-md border border-[#cdd8e4]">
+          <div class="w-14 h-14 rounded-full bg-[#eef2f6] text-[#1e2b45] border border-[#d4af37]/50 flex items-center justify-center mx-auto mb-3">
             <svg class="w-7 h-7" fill="none" stroke="currentColor" stroke-width="1.6" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" d="M12 3v4m-2-2h4m-7 7l7-5 7 5v9H5v-9z"/>
               <path stroke-linecap="round" stroke-linejoin="round" d="M10 21v-5a2 2 0 114 0v5"/>
             </svg>
           </div>
-          <div class="flex items-center justify-center gap-2">
-            <h3 class="font-serif-elegant text-2xl font-bold text-[#2c3e2e]">
-              Ceremonia Matrimonial
-            </h3>
-          </div>
-          <p class="text-sm font-semibold text-[#b89758] mt-1">
+          <h3 class="font-serif-elegant text-2xl font-bold text-[#1e2b45]">
+            Matrimonio Eclesiástico y Recepción
+          </h3>
+          <p class="text-sm font-semibold text-[#b68d2c] mt-1">
             Hora: <span id="displayCeremonyTime">10:00 A.M.</span>
           </p>
-          <p id="displayCeremonyPlace" class="font-serif-elegant text-xl text-[#2c3e2e] mt-2 font-bold uppercase tracking-wide">
-            MINISTERIO EN HONOR AL REY DESDE HUANCAYO
+          <p id="displayCeremonyPlace" class="font-serif-elegant text-2xl text-[#1e2b45] mt-2 font-bold">
+            Local de Recepciones “Rodriguez”
           </p>
-          <p id="displayCeremonyAddress" class="text-xs text-[#647a67] mt-1">
-            Huancayo, Junín · Ubicación oficial en Google Maps
+          <p id="displayCeremonyAddress" class="font-serif-elegant text-lg text-[#465369] mt-0.5 font-medium">
+            Av. Jorge Chávez N° 304 - Jauja
           </p>
-          <div class="mt-4 flex flex-wrap justify-center gap-2">
+          <div class="mt-5 flex flex-wrap justify-center gap-2.5">
             <button
               id="btnMapCeremony"
               type="button"
               onclick="openMapPreview('ceremony')"
-              class="inline-flex items-center gap-2 px-6 py-2.5 rounded-full bg-[#5f7a61] hover:bg-[#435b46] text-white text-xs uppercase tracking-widest font-semibold transition shadow-sm"
+              class="inline-flex items-center gap-2 px-6 py-2.5 rounded-full bg-[#1e2b45] hover:bg-[#2c3e63] text-white text-xs uppercase tracking-widest font-semibold transition shadow-sm"
             >
               📍 Ver mapa
             </button>
@@ -396,76 +536,74 @@
               href="https://maps.app.goo.gl/xi9sdxCRa1xg1XcS6?g_st=aw"
               target="_blank"
               rel="noopener noreferrer"
-              class="inline-flex items-center gap-1.5 px-5 py-2.5 rounded-full border border-[#5f7a61] text-[#435b46] hover:bg-[#eef3ee] text-xs uppercase tracking-wider font-semibold transition"
+              class="inline-flex items-center gap-1.5 px-5 py-2.5 rounded-full border border-[#1e2b45] text-[#1e2b45] hover:bg-[#eef2f6] text-xs uppercase tracking-wider font-semibold transition"
             >
               🗺️ Abrir GPS Directo
             </a>
           </div>
         </div>
 
-        <!-- Reception Card -->
-        <div class="bg-white rounded-2xl p-6 shadow-sm border border-[#dce5dc]">
-          <div class="w-14 h-14 rounded-full bg-[#eef3ee] text-[#435b46] flex items-center justify-center mx-auto mb-3">
-            <!-- Champagne Glasses SVG Icon -->
-            <svg class="w-7 h-7" fill="none" stroke="currentColor" stroke-width="1.6" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" d="M8 3h8l-1.5 7a3.5 3.5 0 01-5 0L8 3zM12 13v6m-3 0h6"/>
-            </svg>
+        <!-- Musical Ministry Card: Ministerio Evangélico "En Honor Al Rey" Desde Huancayo -->
+        <div class="bg-gradient-to-br from-[#1e2b45] to-[#344669] text-white rounded-2xl p-6 shadow-md border border-[#d4af37]/60">
+          <div class="w-12 h-12 rounded-full bg-white/10 text-[#f3d478] flex items-center justify-center mx-auto mb-3 text-2xl">
+            🎶
           </div>
-          <div class="flex items-center justify-center gap-2">
-            <h3 class="font-serif-elegant text-2xl font-bold text-[#2c3e2e]">
-              Recepción Social
-            </h3>
-            <span class="demo-badge">Lugar Demo</span>
-          </div>
-          <p class="text-sm font-semibold text-[#b89758] mt-1">
-            Hora: <span id="displayReceptionTime">12:00 P.M.</span>
+          <p class="text-xs uppercase tracking-[0.2em] text-[#f3d478] font-semibold">
+            Alabanza y Amenización Especial
           </p>
-          <p id="displayReceptionPlace" class="font-serif-elegant text-xl text-[#2c3e2e] mt-2 font-medium">
-            Recepción de Boda (Huancayo)
+          <p class="font-serif-elegant text-xl text-white mt-2">
+            Estará amenizado por el Ministerio Evangélico
           </p>
-          <p id="displayReceptionAddress" class="text-xs text-[#647a67] mt-1">
-            Después de la ceremonia en Ministerio En Honor Al Rey
+          <p id="displayReceptionPlace" class="font-serif-elegant text-2xl sm:text-3xl font-bold text-[#f3d478] mt-1">
+            “En Honor Al Rey”
+          </p>
+          <p id="displayReceptionAddress" class="text-xs uppercase tracking-[0.18em] text-sky-200 mt-1 font-semibold">
+            Desde Huancayo · A partir de las <span id="displayReceptionTime">10:00 A.M.</span>
           </p>
           <div class="mt-4">
             <button
               id="btnMapReception"
               type="button"
               onclick="openMapPreview('reception')"
-              class="inline-flex items-center gap-2 px-6 py-2.5 rounded-full bg-[#5f7a61] hover:bg-[#435b46] text-white text-xs uppercase tracking-widest font-semibold transition shadow-sm"
+              class="inline-flex items-center gap-2 px-5 py-2 rounded-full bg-white/15 hover:bg-white/25 text-white text-xs uppercase tracking-widest font-medium transition"
             >
               📍 Ver mapa
             </button>
           </div>
         </div>
       </div>
+
+      <!-- Gratitude Quote from Card -->
+      <p class="font-serif-elegant italic text-lg sm:text-xl text-[#465369] max-w-md mx-auto mt-8">
+        “Agradecemos por anticipado por acompañarnos en este día tan especial para nosotros”
+      </p>
     </section>
 
-    <!-- 5. VERTICAL TIMELINE / ITINERARIO (Línea de Tiempo Ilustrada) -->
-    <section id="itinerario" class="py-12 px-6 bg-[#eef3ee]/70 border-y border-[#d6e2d6]">
+    <!-- 5. VERTICAL TIMELINE / ITINERARIO -->
+    <section id="itinerario" class="py-12 px-6 bg-[#eef2f6]/80 border-y border-[#cdd8e4]">
       <div class="text-center mb-8">
         <div class="flex items-center justify-center gap-2 mb-1">
-          <p class="uppercase tracking-[0.22em] text-xs text-[#647a67] font-semibold">
-            Minuto a minuto
+          <p class="uppercase tracking-[0.22em] text-xs text-[#465369] font-semibold">
+            Programa del día
           </p>
-          <span class="demo-badge">Horarios Demo</span>
+          <span class="demo-badge">Horarios Referenciales</span>
         </div>
-        <h2 class="font-script text-5xl text-[#3b523e]">
+        <h2 class="font-script text-5xl text-[#1e2b45]">
           Itinerario de Boda
         </h2>
       </div>
 
       <div class="relative max-w-sm mx-auto">
-        <!-- Vertical Center Line -->
-        <div class="absolute left-1/2 top-2 bottom-2 w-0.5 bg-[#7d967f]/50 -translate-x-1/2"></div>
+        <div class="absolute left-1/2 top-2 bottom-2 w-0.5 bg-[#748ba0]/60 -translate-x-1/2"></div>
 
         <!-- Step 1: 10:00 AM -->
         <div class="relative flex items-center justify-between mb-8">
           <div class="w-5/12 text-right pr-3">
-            <span class="text-xs font-bold text-[#b89758] tracking-wider">10:00 A.M.</span>
-            <h4 class="font-serif-elegant text-lg font-bold text-[#2c3e2e]">Ceremonia</h4>
-            <p class="text-[11px] text-[#647a67]">Ministerio En Honor Al Rey</p>
+            <span class="text-xs font-bold text-[#b68d2c] tracking-wider">10:00 A.M.</span>
+            <h4 class="font-serif-elegant text-lg font-bold text-[#1e2b45]">Matrimonio Eclesiástico</h4>
+            <p class="text-[11px] text-[#465369]">Local de Recepciones “Rodriguez”</p>
           </div>
-          <div class="z-10 w-10 h-10 rounded-full bg-white border-2 border-[#5f7a61] flex items-center justify-center text-base shadow-sm">
+          <div class="z-10 w-10 h-10 rounded-full bg-white border-2 border-[#1e2b45] flex items-center justify-center text-base shadow-sm">
             💒
           </div>
           <div class="w-5/12 pl-3"></div>
@@ -474,24 +612,24 @@
         <!-- Step 2: 12:00 PM -->
         <div class="relative flex items-center justify-between mb-8">
           <div class="w-5/12 pr-3"></div>
-          <div class="z-10 w-10 h-10 rounded-full bg-white border-2 border-[#5f7a61] flex items-center justify-center text-base shadow-sm">
+          <div class="z-10 w-10 h-10 rounded-full bg-white border-2 border-[#1e2b45] flex items-center justify-center text-base shadow-sm">
             🥂
           </div>
           <div class="w-5/12 text-left pl-3">
-            <span class="text-xs font-bold text-[#b89758] tracking-wider">12:00 P.M.</span>
-            <h4 class="font-serif-elegant text-lg font-bold text-[#2c3e2e]">Recepción y Brindis</h4>
-            <p class="text-[11px] text-[#647a67]">Bienvenida y fotos con los novios</p>
+            <span class="text-xs font-bold text-[#b68d2c] tracking-wider">12:00 P.M.</span>
+            <h4 class="font-serif-elegant text-lg font-bold text-[#1e2b45]">Felicitaciones y Fotos</h4>
+            <p class="text-[11px] text-[#465369]">Recuerdos con padres, padrinos e invitados</p>
           </div>
         </div>
 
         <!-- Step 3: 01:30 PM -->
         <div class="relative flex items-center justify-between mb-8">
           <div class="w-5/12 text-right pr-3">
-            <span class="text-xs font-bold text-[#b89758] tracking-wider">01:30 P.M.</span>
-            <h4 class="font-serif-elegant text-lg font-bold text-[#2c3e2e]">Almuerzo de Gala</h4>
-            <p class="text-[11px] text-[#647a67]">Banquete especial en familia</p>
+            <span class="text-xs font-bold text-[#b68d2c] tracking-wider">01:30 P.M.</span>
+            <h4 class="font-serif-elegant text-lg font-bold text-[#1e2b45]">Almuerzo de Gala</h4>
+            <p class="text-[11px] text-[#465369]">Banquete familiar en honor a los novios</p>
           </div>
-          <div class="z-10 w-10 h-10 rounded-full bg-white border-2 border-[#5f7a61] flex items-center justify-center text-base shadow-sm">
+          <div class="z-10 w-10 h-10 rounded-full bg-white border-2 border-[#1e2b45] flex items-center justify-center text-base shadow-sm">
             🍽️
           </div>
           <div class="w-5/12 pl-3"></div>
@@ -500,136 +638,142 @@
         <!-- Step 4: 03:00 PM -->
         <div class="relative flex items-center justify-between">
           <div class="w-5/12 pr-3"></div>
-          <div class="z-10 w-10 h-10 rounded-full bg-white border-2 border-[#5f7a61] flex items-center justify-center text-base shadow-sm">
-            💃
+          <div class="z-10 w-10 h-10 rounded-full bg-white border-2 border-[#1e2b45] flex items-center justify-center text-base shadow-sm">
+            🎶
           </div>
           <div class="w-5/12 text-left pl-3">
-            <span class="text-xs font-bold text-[#b89758] tracking-wider">03:00 P.M.</span>
-            <h4 class="font-serif-elegant text-lg font-bold text-[#2c3e2e]">Celebración</h4>
-            <p class="text-[11px] text-[#647a67]">¡Compartiendo nuestra alegría!</p>
+            <span class="text-xs font-bold text-[#b68d2c] tracking-wider">02:30 P.M.</span>
+            <h4 class="font-serif-elegant text-lg font-bold text-[#1e2b45]">Alabanza y Celebración</h4>
+            <p class="text-[11px] text-[#465369]">Ministerio Evangélico “En Honor Al Rey”</p>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- 6. DRESS CODE (Código de Vestimenta - Model 2) -->
+    <!-- 6. DRESS CODE & COLOR PALETTE (Matching Image 1 Palette Swatches) -->
     <section id="vestimenta" class="py-12 px-6 text-center">
       <div class="flex items-center justify-center gap-2 mb-1">
-        <p class="uppercase tracking-[0.22em] text-xs text-[#647a67] font-semibold">
+        <p class="uppercase tracking-[0.22em] text-xs text-[#465369] font-semibold">
           Sugerencia de atuendo
         </p>
         <span class="demo-badge">Editable</span>
       </div>
-      <h2 class="font-script text-5xl text-[#3b523e] mb-2">
+      <h2 class="font-script text-5xl text-[#1e2b45] mb-2">
         Código de Vestimenta
       </h2>
-      <p class="font-serif-elegant text-2xl font-bold tracking-[0.18em] text-[#b89758] uppercase mb-6">
+      <p class="font-serif-elegant text-2xl font-bold tracking-[0.18em] text-[#b68d2c] uppercase mb-5">
         Formal Elegante
       </p>
 
+      <!-- Palette Swatches from Reference Image 1 -->
+      <div class="flex items-center justify-center gap-3 mb-6">
+        <span class="w-9 h-9 rounded-full bg-[#465369] border-2 border-white shadow-md" title="Azul Pizarra / Marino"></span>
+        <span class="w-9 h-9 rounded-full bg-[#f4f4f2] border-2 border-gray-200 shadow-md" title="Blanco Alabastro"></span>
+        <span class="w-9 h-9 rounded-full bg-[#748ba0] border-2 border-white shadow-md" title="Azul Acero Empolvado"></span>
+        <span class="w-9 h-9 rounded-full bg-[#faf3f3] border-2 border-gray-200 shadow-md" title="Rosa Marfil Suave"></span>
+      </div>
+
       <div class="grid grid-cols-2 gap-4 max-w-md mx-auto">
-        <div class="bg-white border border-[#dce5dc] rounded-2xl p-5 shadow-sm">
+        <div class="bg-white border border-[#cdd8e4] rounded-2xl p-5 shadow-sm">
           <div class="text-3xl mb-2">👗</div>
-          <h3 class="font-serif-elegant text-xl font-bold text-[#2c3e2e]">Damas</h3>
-          <p class="text-xs text-[#647a67] mt-1 leading-relaxed">
+          <h3 class="font-serif-elegant text-xl font-bold text-[#1e2b45]">Damas</h3>
+          <p class="text-xs text-[#465369] mt-1 leading-relaxed">
             Vestido largo o midi elegante.<br/>
-            <span class="font-semibold text-[#435b46]">Colores reservados:</span> Blanco, marfil y verde eucalipto.
+            <span class="font-semibold text-[#1e2b45]">Reservado para la novia:</span> Blanco y marfil.
           </p>
         </div>
-        <div class="bg-white border border-[#dce5dc] rounded-2xl p-5 shadow-sm">
+        <div class="bg-white border border-[#cdd8e4] rounded-2xl p-5 shadow-sm">
           <div class="text-3xl mb-2">🤵</div>
-          <h3 class="font-serif-elegant text-xl font-bold text-[#2c3e2e]">Caballeros</h3>
-          <p class="text-xs text-[#647a67] mt-1 leading-relaxed">
-            Traje formal completo con camisa y corbata o michi.
+          <h3 class="font-serif-elegant text-xl font-bold text-[#1e2b45]">Caballeros</h3>
+          <p class="text-xs text-[#465369] mt-1 leading-relaxed">
+            Traje formal completo con camisa y corbata.
           </p>
         </div>
       </div>
     </section>
 
-    <!-- 7. PHOTO GALLERY WITH TORN PAPER BORDERS (Galería con Fotos Reales de Dhersy & Dayana) -->
-    <section id="galeria" class="py-12 px-6 bg-[#eef3ee]/50 border-t border-[#d6e2d6] text-center">
-      <div class="flex items-center justify-center gap-2 mb-1">
-        <p class="uppercase tracking-[0.22em] text-xs text-[#647a67] font-semibold">
-          Nuestros momentos
-        </p>
-      </div>
-      <h2 class="font-script text-5xl text-[#3b523e] mb-6">
+    <!-- 7. PHOTO GALLERY WITH REAL COUPLE PHOTOS -->
+    <section id="galeria" class="py-12 px-6 bg-[#eef2f6]/60 border-t border-[#cdd8e4] text-center">
+      <p class="uppercase tracking-[0.22em] text-xs text-[#465369] font-semibold mb-1">
+        Nuestros momentos
+      </p>
+      <h2 class="font-script text-5xl text-[#1e2b45] mb-6">
         Nuestro Amor
       </h2>
 
       <div class="grid grid-cols-1 sm:grid-cols-2 gap-6 max-w-md mx-auto">
-        <div class="torn-photo-card bg-white p-2.5 shadow-md">
+        <div class="torn-photo-card bg-white p-2.5 shadow-md border border-[#cdd8e4]">
           <img
             src="img/novios_mirador.jpg"
             alt="Dhersy y Dayana en el mirador"
-            class="w-full h-80 object-cover"
+            class="w-full h-80 object-cover rounded-lg"
           />
-          <p class="font-serif-elegant italic text-sm text-[#435b46] mt-2">
-            Juntos para toda la vida
+          <p class="font-serif-elegant italic text-sm text-[#1e2b45] mt-2">
+            “Mejor son dos que uno...” — Eclesiastés 4:9
           </p>
         </div>
-        <div class="torn-photo-card bg-white p-2.5 shadow-md flex flex-col justify-between">
+        <div class="torn-photo-card bg-white p-2.5 shadow-md border border-[#cdd8e4] flex flex-col justify-between">
           <img
             src="img/novios_abrazo.jpg"
             alt="Retrato de Dhersy y Dayana"
-            class="w-full h-80 object-cover"
+            class="w-full h-80 object-cover rounded-lg"
           />
-          <p class="font-serif-elegant italic text-sm text-[#435b46] mt-2">
-            02 · Enero · 2027
+          <p class="font-serif-elegant italic text-sm text-[#1e2b45] mt-2">
+            02 · Enero · 2027 · Jauja
           </p>
         </div>
       </div>
     </section>
 
-    <!-- 8. GIFTS / LLUVIA DE SOBRES (Sugerencia de Regalos) -->
+    <!-- 8. GIFTS / LLUVIA DE SOBRES -->
     <section id="regalos" class="py-10 px-6 text-center">
-      <div class="max-w-md mx-auto bg-white border border-[#dce5dc] rounded-2xl p-6 shadow-sm">
+      <div class="max-w-md mx-auto bg-white border border-[#cdd8e4] rounded-2xl p-6 shadow-sm">
         <div class="text-3xl mb-2">🎁</div>
         <div class="flex items-center justify-center gap-2">
-          <h2 class="font-script text-4xl text-[#3b523e]">
-            Detalle de Bodas
+          <h2 class="font-script text-4xl text-[#1e2b45]">
+            Presente de Bodas
           </h2>
           <span class="demo-badge">Cuentas Demo</span>
         </div>
-        <p class="text-xs text-[#647a67] mt-2 leading-relaxed">
-          Su presencia es nuestro mejor regalo. Si desean tener un detalle adicional con nosotros, pueden hacerlo mediante transferencia o lluvia de sobres:
+        <p class="text-xs text-[#465369] mt-2 leading-relaxed">
+          Su presencia y sus oraciones son nuestro mejor regalo. Si desean hacernos llegar un presente adicional, pueden hacerlo aquí:
         </p>
         <div class="mt-4">
           <button
             id="btnToggleGiftDetails"
             type="button"
             onclick="toggleGiftBox()"
-            class="px-5 py-2 rounded-full border border-[#5f7a61] text-[#435b46] hover:bg-[#eef3ee] text-xs font-semibold uppercase tracking-wider transition"
+            class="px-5 py-2 rounded-full border border-[#1e2b45] text-[#1e2b45] hover:bg-[#eef2f6] text-xs font-semibold uppercase tracking-wider transition"
           >
             Ver números de cuenta / Yape
           </button>
         </div>
 
-        <div id="giftDetailsPanel" class="hidden mt-4 pt-4 border-t border-[#eef3ee] text-left text-xs space-y-2.5">
-          <div class="flex items-center justify-between bg-[#faf9f5] p-2.5 rounded-lg border border-[#e2e8e2]">
+        <div id="giftDetailsPanel" class="hidden mt-4 pt-4 border-t border-[#eef2f6] text-left text-xs space-y-2.5">
+          <div class="flex items-center justify-between bg-[#faf9f7] p-2.5 rounded-lg border border-[#d8e0e8]">
             <div>
-              <span class="font-semibold text-[#2c3e2e] block">BCP Soles (Dhersy Reyna)</span>
-              <span id="accountBcpText" class="text-[#647a67] font-mono">191-00000000-0-00</span>
+              <span class="font-semibold text-[#1e2b45] block">BCP Soles (Dhersy Reyna)</span>
+              <span id="accountBcpText" class="text-[#465369] font-mono">191-00000000-0-00</span>
             </div>
             <button
               id="btnCopyBcp"
               type="button"
               onclick="copyTextValue('191-00000000-0-00', 'Cuenta BCP copiada')"
-              class="px-2.5 py-1 rounded bg-[#eef3ee] hover:bg-[#dce6dc] text-[#2c3e2e] font-medium"
+              class="px-2.5 py-1 rounded bg-[#eef2f6] hover:bg-[#dbe4ee] text-[#1e2b45] font-medium"
             >
               Copiar
             </button>
           </div>
-          <div class="flex items-center justify-between bg-[#faf9f5] p-2.5 rounded-lg border border-[#e2e8e2]">
+          <div class="flex items-center justify-between bg-[#faf9f7] p-2.5 rounded-lg border border-[#d8e0e8]">
             <div>
-              <span class="font-semibold text-[#2c3e2e] block">Yape / Plin (Dayana Mayta)</span>
-              <span id="accountYapeText" class="text-[#647a67] font-mono">999 888 777</span>
+              <span class="font-semibold text-[#1e2b45] block">Yape / Plin (Dayana Mayta)</span>
+              <span id="accountYapeText" class="text-[#465369] font-mono">999 888 777</span>
             </div>
             <button
               id="btnCopyYape"
               type="button"
               onclick="copyTextValue('999888777', 'Número de Yape copiado')"
-              class="px-2.5 py-1 rounded bg-[#eef3ee] hover:bg-[#dce6dc] text-[#2c3e2e] font-medium"
+              class="px-2.5 py-1 rounded bg-[#eef2f6] hover:bg-[#dbe4ee] text-[#1e2b45] font-medium"
             >
               Copiar
             </button>
@@ -638,53 +782,53 @@
       </div>
     </section>
 
-    <!-- 9. RSVP CONFIRMATION & DIGITAL PASS (Confirmación de Asistencia) -->
-    <section id="confirmacion" class="py-12 px-6 bg-[#2c3e2e] text-white text-center relative">
-      <p class="uppercase tracking-[0.22em] text-xs text-emerald-200 font-semibold mb-1">
+    <!-- 9. RSVP CONFIRMATION & NAVY/GOLD DIGITAL PASS (Model 1 End Screen Style) -->
+    <section id="confirmacion" class="py-12 px-6 bg-[#1e2b45] text-white text-center relative">
+      <p class="uppercase tracking-[0.22em] text-xs text-[#f3d478] font-semibold mb-1">
         Esperamos contar contigo
       </p>
       <h2 class="font-script text-5xl text-white mb-3">
         Confirmar Asistencia
       </h2>
-      <p class="text-xs text-emerald-100/80 max-w-sm mx-auto mb-6">
-        Por favor confírmanos tu asistencia para organizar tu lugar reservado y generar tu pase digital.
+      <p class="text-xs text-sky-100/80 max-w-sm mx-auto mb-6">
+        Confírmanos tu asistencia para reservar tus pases en el Local de Recepciones “Rodriguez” (Jauja).
       </p>
 
-      <form id="rsvpForm" onsubmit="handleRsvpSubmit(event)" class="max-w-md mx-auto bg-white text-[#2f3a30] rounded-2xl p-6 shadow-xl text-left space-y-4">
+      <form id="rsvpForm" onsubmit="handleRsvpSubmit(event)" class="max-w-md mx-auto bg-white text-[#1e2b45] rounded-2xl p-6 shadow-xl text-left space-y-4">
         <div>
-          <label for="guestNameInput" class="block text-xs font-semibold uppercase tracking-wider text-[#435b46] mb-1">
+          <label for="guestNameInput" class="block text-xs font-semibold uppercase tracking-wider text-[#1e2b45] mb-1">
             Nombre y Apellidos o Familia *
           </label>
           <input
             id="guestNameInput"
             type="text"
             required
-            placeholder="Ej. Familia Mayta Carhuancho"
-            class="w-full px-3.5 py-2.5 rounded-xl border border-[#cbd5cb] text-sm focus:outline-none focus:border-[#435b46]"
+            placeholder="Ej. Familia Escalera Soto"
+            class="w-full px-3.5 py-2.5 rounded-xl border border-[#cbd5e1] text-sm focus:outline-none focus:border-[#1e2b45]"
           />
         </div>
 
         <div class="grid grid-cols-2 gap-3">
           <div>
-            <label for="guestAttendSelect" class="block text-xs font-semibold uppercase tracking-wider text-[#435b46] mb-1">
+            <label for="guestAttendSelect" class="block text-xs font-semibold uppercase tracking-wider text-[#1e2b45] mb-1">
               ¿Asistirás?
             </label>
             <select
               id="guestAttendSelect"
-              class="w-full px-3 py-2.5 rounded-xl border border-[#cbd5cb] text-sm bg-white focus:outline-none focus:border-[#435b46]"
+              class="w-full px-3 py-2.5 rounded-xl border border-[#cbd5e1] text-sm bg-white focus:outline-none focus:border-[#1e2b45]"
             >
-              <option value="Sí, asistiré con mucha alegría">¡Sí, asistiré! 💚</option>
+              <option value="Sí, asistiré con mucha alegría">¡Sí, asistiré! 💙</option>
               <option value="No podré asistir, les envío un abrazo">No podré asistir</option>
             </select>
           </div>
 
           <div>
-            <label for="guestSeatsSelect" class="block text-xs font-semibold uppercase tracking-wider text-[#435b46] mb-1">
+            <label for="guestSeatsSelect" class="block text-xs font-semibold uppercase tracking-wider text-[#1e2b45] mb-1">
               N.º de Pases
             </label>
             <select
               id="guestSeatsSelect"
-              class="w-full px-3 py-2.5 rounded-xl border border-[#cbd5cb] text-sm bg-white focus:outline-none focus:border-[#435b46]"
+              class="w-full px-3 py-2.5 rounded-xl border border-[#cbd5e1] text-sm bg-white focus:outline-none focus:border-[#1e2b45]"
             >
               <option value="1">1 persona</option>
               <option value="2" selected>2 personas</option>
@@ -696,14 +840,14 @@
         </div>
 
         <div>
-          <label for="guestMessageInput" class="block text-xs font-semibold uppercase tracking-wider text-[#435b46] mb-1">
+          <label for="guestMessageInput" class="block text-xs font-semibold uppercase tracking-wider text-[#1e2b45] mb-1">
             Dedicatoria o Mensaje para Dhersy &amp; Dayana
           </label>
           <textarea
             id="guestMessageInput"
             rows="2"
-            placeholder="¡Muchas felicidades en esta nueva etapa!"
-            class="w-full px-3.5 py-2 rounded-xl border border-[#cbd5cb] text-sm focus:outline-none focus:border-[#435b46]"
+            placeholder="¡Que Dios bendiga siempre su matrimonio!"
+            class="w-full px-3.5 py-2 rounded-xl border border-[#cbd5e1] text-sm focus:outline-none focus:border-[#1e2b45]"
           ></textarea>
         </div>
 
@@ -711,7 +855,7 @@
           <button
             id="btnSubmitRsvp"
             type="submit"
-            class="flex-1 py-3 px-4 rounded-xl bg-[#435b46] hover:bg-[#2c3e2e] text-white font-semibold text-xs uppercase tracking-wider transition shadow-md"
+            class="flex-1 py-3 px-4 rounded-xl bg-[#1e2b45] hover:bg-[#151f33] text-white font-semibold text-xs uppercase tracking-wider transition shadow-md"
           >
             🎟️ Generar Pase y Confirmar
           </button>
@@ -719,50 +863,50 @@
             id="btnWhatsappRsvp"
             type="button"
             onclick="sendWhatsappRsvp()"
-            class="py-3 px-4 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-semibold text-xs uppercase tracking-wider transition shadow-md"
+            class="py-3 px-4 rounded-xl bg-[#b68d2c] hover:bg-[#9e781d] text-white font-semibold text-xs uppercase tracking-wider transition shadow-md"
           >
             💬 Enviar por WhatsApp
           </button>
         </div>
       </form>
 
-      <!-- Generated Digital Pass Preview Card -->
-      <div id="digitalPassCard" class="hidden max-w-md mx-auto mt-6 bg-[#faf9f5] text-[#2c3e2e] rounded-2xl p-6 border-2 border-[#b89758] shadow-xl">
-        <p class="text-[11px] uppercase tracking-[0.25em] text-[#647a67] font-semibold">
+      <!-- Generated Digital Pass Preview Card (Model 1 Navy & White Floral Pass) -->
+      <div id="digitalPassCard" class="hidden max-w-md mx-auto mt-6 bg-[#faf9f7] text-[#1e2b45] rounded-2xl p-6 border-2 border-[#d4af37] shadow-2xl">
+        <p class="text-[11px] uppercase tracking-[0.25em] text-[#465369] font-semibold">
           Pase Oficial de Invitado
         </p>
-        <h3 class="font-script text-4xl text-[#3b523e] mt-1">
+        <h3 class="font-script text-4xl text-[#1e2b45] mt-1">
           Dhersy &amp; Dayana
         </h3>
-        <p class="text-xs text-[#b89758] font-semibold">
-          Sábado, 02 de Enero de 2027 · 10:00 A.M. · Huancayo
+        <p class="text-xs text-[#b68d2c] font-semibold">
+          Sábado, 02 de Enero de 2027 · 10:00 A.M. · Local “Rodriguez” (Jauja)
         </p>
-        <div class="my-4 py-3 px-4 bg-white rounded-xl border border-[#dce5dc]">
-          <p class="text-xs text-[#647a67]">Invitado(a) especial:</p>
-          <p id="passGuestName" class="font-serif-elegant text-2xl font-bold text-[#2c3e2e] mt-0.5">
+        <div class="my-4 py-3 px-4 bg-white rounded-xl border border-[#cdd8e4]">
+          <p class="text-xs text-[#465369]">Invitado(a) especial:</p>
+          <p id="passGuestName" class="font-serif-elegant text-2xl font-bold text-[#1e2b45] mt-0.5">
             Invitado Especial
           </p>
-          <p id="passGuestSeats" class="text-xs font-semibold text-[#435b46] mt-1 uppercase tracking-wider">
+          <p id="passGuestSeats" class="text-xs font-semibold text-[#1e2b45] mt-1 uppercase tracking-wider">
             Hemos reservado 2 lugares en tu honor
           </p>
         </div>
-        <p id="passGuestStatus" class="text-xs text-emerald-700 font-medium">
+        <p id="passGuestStatus" class="text-xs text-[#1e2b45] font-semibold">
           ✓ Confirmación registrada en lista de invitados
         </p>
       </div>
 
-      <footer class="mt-10 pt-6 border-t border-white/10 text-xs text-emerald-100/70">
+      <footer class="mt-10 pt-6 border-t border-white/10 text-xs text-sky-100/75">
         <p class="font-script text-3xl text-white mb-1">Dhersy &amp; Dayana</p>
-        <p>02 de Enero de 2027 · Ministerio En Honor Al Rey · Huancayo</p>
+        <p>02 de Enero de 2027 · Local de Recepciones “Rodriguez” · Av. Jorge Chávez N° 304 - Jauja</p>
       </footer>
     </section>
   </main>
 
-  <!-- MODAL 1: EDIT DEMO DATA IN REAL TIME -->
+  <!-- MODAL 1: EDIT DATA IN REAL TIME -->
   <div id="editorModal" class="hidden fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4">
-    <div class="bg-white rounded-2xl max-w-lg w-full max-h-[90vh] overflow-y-auto p-6 shadow-2xl border border-[#dce5dc]">
+    <div class="bg-white rounded-2xl max-w-lg w-full max-h-[90vh] overflow-y-auto p-6 shadow-2xl border border-[#cdd8e4]">
       <div class="flex items-center justify-between border-b pb-3 mb-4">
-        <h3 class="font-serif-elegant text-2xl font-bold text-[#2c3e2e]">
+        <h3 class="font-serif-elegant text-2xl font-bold text-[#1e2b45]">
           ✏️ Personalizar Datos de la Invitación
         </h3>
         <button id="btnCloseEditor" type="button" onclick="closeModal('editorModal')" class="w-8 h-8 rounded-full bg-gray-100 hover:bg-gray-200 text-gray-600 flex items-center justify-center">
@@ -773,8 +917,8 @@
       <div class="space-y-3 text-xs">
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
           <div>
-            <label for="editGroomFather" class="font-semibold text-gray-700 block mb-1">Papá del Novio (completar apellido):</label>
-            <input id="editGroomFather" type="text" value="Yuri Esrom Reyna" class="w-full px-3 py-2 border rounded-lg" />
+            <label for="editGroomFather" class="font-semibold text-gray-700 block mb-1">Papá del Novio:</label>
+            <input id="editGroomFather" type="text" value="Yuri Esrom Reyna Cárdenas" class="w-full px-3 py-2 border rounded-lg" />
           </div>
           <div>
             <label for="editGroomMother" class="font-semibold text-gray-700 block mb-1">Mamá del Novio:</label>
@@ -794,23 +938,23 @@
         </div>
 
         <div>
-          <label for="editGodparents" class="font-semibold text-gray-700 block mb-1">Padrinos (Demo):</label>
-          <input id="editGodparents" type="text" value="Carlos Alberto Mendoza & María Elena Gómez" class="w-full px-3 py-2 border rounded-lg" />
+          <label for="editGodparents" class="font-semibold text-gray-700 block mb-1">Padrinos:</label>
+          <input id="editGodparents" type="text" value="Eduardo Escalera Mandujano & Gimena Soto Carhuancho" class="w-full px-3 py-2 border rounded-lg" />
         </div>
 
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
           <div>
-            <label for="editCeremonyPlace" class="font-semibold text-gray-700 block mb-1">Ministerio / Ceremonia (10:00 a.m.):</label>
-            <input id="editCeremonyPlace" type="text" value="MINISTERIO EN HONOR AL REY DESDE HUANCAYO" class="w-full px-3 py-2 border rounded-lg" />
+            <label for="editCeremonyPlace" class="font-semibold text-gray-700 block mb-1">Local del Evento (10:00 a.m.):</label>
+            <input id="editCeremonyPlace" type="text" value="Local de Recepciones “Rodriguez”" class="w-full px-3 py-2 border rounded-lg" />
           </div>
           <div>
-            <label for="editReceptionPlace" class="font-semibold text-gray-700 block mb-1">Local de Recepción:</label>
-            <input id="editReceptionPlace" type="text" value="Recepción de Boda (Huancayo)" class="w-full px-3 py-2 border rounded-lg" />
+            <label for="editReceptionPlace" class="font-semibold text-gray-700 block mb-1">Ministerio Musical:</label>
+            <input id="editReceptionPlace" type="text" value="“En Honor Al Rey”" class="w-full px-3 py-2 border rounded-lg" />
           </div>
         </div>
 
         <div>
-          <label for="editWhatsappPhone" class="font-semibold text-gray-700 block mb-1">Número de WhatsApp para Confirmaciones (con código de país, ej. 51999888777):</label>
+          <label for="editWhatsappPhone" class="font-semibold text-gray-700 block mb-1">Número de WhatsApp para Confirmaciones (ej. 51999888777):</label>
           <input id="editWhatsappPhone" type="text" value="51999888777" class="w-full px-3 py-2 border rounded-lg font-mono" />
         </div>
       </div>
@@ -819,7 +963,7 @@
         <button id="btnCancelEdit" type="button" onclick="closeModal('editorModal')" class="px-4 py-2 rounded-lg border text-xs font-medium">
           Cancelar
         </button>
-        <button id="btnSaveEdit" type="button" onclick="applyCustomData()" class="px-5 py-2 rounded-lg bg-[#435b46] hover:bg-[#2c3e2e] text-white text-xs font-semibold">
+        <button id="btnSaveEdit" type="button" onclick="applyCustomData()" class="px-5 py-2 rounded-lg bg-[#1e2b45] hover:bg-[#151f33] text-white text-xs font-semibold">
           Guardar Cambios en la Invitación
         </button>
       </div>
@@ -828,9 +972,9 @@
 
   <!-- MODAL 2: QR CODE GENERATOR & GITHUB PAGES DEPLOYMENT GUIDE -->
   <div id="qrModal" class="hidden fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4">
-    <div class="bg-white rounded-2xl max-w-lg w-full max-h-[90vh] overflow-y-auto p-6 shadow-2xl border border-[#dce5dc]">
+    <div class="bg-white rounded-2xl max-w-lg w-full max-h-[90vh] overflow-y-auto p-6 shadow-2xl border border-[#cdd8e4]">
       <div class="flex items-center justify-between border-b pb-3 mb-4">
-        <h3 class="font-serif-elegant text-2xl font-bold text-[#2c3e2e]">
+        <h3 class="font-serif-elegant text-2xl font-bold text-[#1e2b45]">
           📱 Generador de Código QR y Despliegue en GitHub
         </h3>
         <button id="btnCloseQr" type="button" onclick="closeModal('qrModal')" class="w-8 h-8 rounded-full bg-gray-100 hover:bg-gray-200 text-gray-600 flex items-center justify-center">
@@ -854,7 +998,7 @@
               id="btnRegenerateQr"
               type="button"
               onclick="renderWeddingQr()"
-              class="px-3.5 py-2 rounded-lg bg-[#435b46] text-white font-semibold"
+              class="px-3.5 py-2 rounded-lg bg-[#1e2b45] text-white font-semibold"
             >
               Actualizar QR
             </button>
@@ -862,31 +1006,31 @@
         </div>
 
         <!-- QR Container Card -->
-        <div class="bg-[#faf9f5] border border-[#dce5dc] rounded-2xl p-5 text-center">
-          <p class="font-script text-3xl text-[#3b523e]">Dhersy &amp; Dayana</p>
-          <p class="text-[11px] text-[#b89758] font-semibold uppercase tracking-widest mb-3">
+        <div class="bg-[#faf9f7] border border-[#cdd8e4] rounded-2xl p-5 text-center">
+          <p class="font-script text-3xl text-[#1e2b45]">Dhersy &amp; Dayana</p>
+          <p class="text-[11px] text-[#b68d2c] font-semibold uppercase tracking-widest mb-3">
             02 · Enero · 2027 — Escanea tu Invitación
           </p>
-          <div id="qrCodeBox" class="inline-flex items-center justify-center bg-white p-3 rounded-xl shadow-sm border border-[#e2e8e2] mx-auto"></div>
+          <div id="qrCodeBox" class="inline-flex items-center justify-center bg-white p-3 rounded-xl shadow-sm border border-[#d8e0e8] mx-auto"></div>
           <p id="qrUrlCaption" class="text-[10px] font-mono text-gray-500 mt-2 break-all">
             https://jimmymayta29.github.io/InvitacionBoda/
           </p>
           <div class="mt-3 flex flex-wrap justify-center gap-2">
-            <button id="btnDownloadQrPng" type="button" onclick="downloadQrImage()" class="px-3.5 py-1.5 rounded-lg bg-[#b89758] hover:bg-[#a38347] text-white text-xs font-semibold transition shadow-sm">
+            <button id="btnDownloadQrPng" type="button" onclick="downloadQrImage()" class="px-3.5 py-1.5 rounded-lg bg-[#b68d2c] hover:bg-[#9e781d] text-white text-xs font-semibold transition shadow-sm">
               ⬇️ Descargar Imagen QR (.PNG)
             </button>
-            <button id="btnDownloadIndexHtml" type="button" onclick="downloadSelfContainedIndex()" class="px-3.5 py-1.5 rounded-lg bg-[#435b46] hover:bg-[#2c3e2e] text-white text-xs font-semibold transition shadow-sm">
+            <button id="btnDownloadIndexHtml" type="button" onclick="downloadSelfContainedIndex()" class="px-3.5 py-1.5 rounded-lg bg-[#1e2b45] hover:bg-[#151f33] text-white text-xs font-semibold transition shadow-sm">
               ⬇️ Descargar index.html listo para GitHub
             </button>
           </div>
         </div>
 
         <!-- GitHub Pages Quick Steps -->
-        <div class="bg-[#eef3ee] rounded-xl p-4 space-y-1.5">
-          <h4 class="font-semibold text-[#2c3e2e] text-sm">🚀 Cómo actualizarla en tu repositorio InvitacionBoda:</h4>
+        <div class="bg-[#eef2f6] rounded-xl p-4 space-y-1.5">
+          <h4 class="font-semibold text-[#1e2b45] text-sm">🚀 Cómo actualizarla en tu repositorio InvitacionBoda:</h4>
           <p>1. Entra a tu repositorio <strong>JimmyMayta29/InvitacionBoda</strong> en GitHub.</p>
           <p>2. Sube el archivo <code class="bg-white px-1.5 py-0.5 rounded">index.html</code> (o los archivos descomprimidos del ZIP) y haz clic en <strong>Commit changes</strong>.</p>
-          <p>3. En <strong>Settings → Pages</strong> asegúrate de tener seleccionada la rama <code class="bg-white px-1.5 py-0.5 rounded">main</code>. ¡Tu enlace quedará actualizado!</p>
+          <p>3. En <strong>Settings → Pages</strong> asegúrate de tener seleccionada la rama <code class="bg-white px-1.5 py-0.5 rounded">main</code>.</p>
         </div>
       </div>
     </div>
@@ -894,21 +1038,21 @@
 
   <!-- MODAL 3: INTERACTIVE MAP PREVIEW -->
   <div id="mapModal" class="hidden fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4">
-    <div class="bg-white rounded-2xl max-w-md w-full p-6 shadow-2xl border border-[#dce5dc] text-center">
+    <div class="bg-white rounded-2xl max-w-md w-full p-6 shadow-2xl border border-[#cdd8e4] text-center">
       <div class="flex items-center justify-between border-b pb-3 mb-4">
-        <h3 id="mapModalTitle" class="font-serif-elegant text-2xl font-bold text-[#2c3e2e]">
+        <h3 id="mapModalTitle" class="font-serif-elegant text-2xl font-bold text-[#1e2b45]">
           Ubicación del Evento
         </h3>
         <button id="btnCloseMap" type="button" onclick="closeModal('mapModal')" class="w-8 h-8 rounded-full bg-gray-100 hover:bg-gray-200 text-gray-600 flex items-center justify-center">
           ✕
         </button>
       </div>
-      <p id="mapModalPlace" class="font-serif-elegant text-xl font-bold text-[#3b523e]"></p>
-      <p id="mapModalAddress" class="text-xs text-[#647a67] mt-1 mb-4"></p>
-      <div class="bg-[#eef3ee] rounded-xl p-6 border border-[#d6e2d6] mb-4">
+      <p id="mapModalPlace" class="font-serif-elegant text-xl font-bold text-[#1e2b45]"></p>
+      <p id="mapModalAddress" class="text-xs text-[#465369] mt-1 mb-4"></p>
+      <div class="bg-[#eef2f6] rounded-xl p-6 border border-[#cdd8e4] mb-4">
         <div class="text-4xl mb-2">🗺️</div>
-        <p class="text-xs text-[#435b46]">
-          Al presionar el botón inferior se abrirá la ubicación exacta en <strong>Google Maps</strong> para llegar al evento en Huancayo.
+        <p class="text-xs text-[#1e2b45]">
+          Al presionar el botón inferior se abrirá la ubicación exacta en <strong>Google Maps</strong>.
         </p>
       </div>
       <div class="flex gap-2 justify-center">
@@ -920,7 +1064,7 @@
           href="https://maps.app.goo.gl/xi9sdxCRa1xg1XcS6?g_st=aw"
           target="_blank"
           rel="noopener noreferrer"
-          class="px-5 py-2.5 rounded-xl bg-[#435b46] hover:bg-[#2c3e2e] text-white text-xs font-semibold uppercase tracking-wider"
+          class="px-5 py-2.5 rounded-xl bg-[#1e2b45] hover:bg-[#151f33] text-white text-xs font-semibold uppercase tracking-wider"
         >
           Abrir en Google Maps ↗
         </a>
@@ -929,7 +1073,7 @@
   </div>
 
   <!-- Toast Notification -->
-  <div id="toastNotification" class="hidden fixed bottom-5 left-1/2 -translate-x-1/2 z-50 bg-[#2c3e2e] text-white px-5 py-2.5 rounded-full shadow-lg text-xs font-medium border border-white/15">
+  <div id="toastNotification" class="hidden fixed bottom-5 left-1/2 -translate-x-1/2 z-50 bg-[#1e2b45] text-white px-5 py-2.5 rounded-full shadow-lg text-xs font-medium border border-[#d4af37]/50">
     <span id="toastMessage">Acción completada</span>
   </div>
 
@@ -938,11 +1082,11 @@
     const weddingState = {
       targetDateISO: '2027-01-02T10:00:00-05:00',
       whatsappNumber: '51999888777',
-      ceremonyPlace: 'MINISTERIO EN HONOR AL REY DESDE HUANCAYO',
-      ceremonyAddress: 'Huancayo, Junín · Ubicación oficial en Google Maps',
+      ceremonyPlace: 'Local de Recepciones “Rodriguez”',
+      ceremonyAddress: 'Av. Jorge Chávez N° 304 - Jauja',
       ceremonyMapUrl: 'https://maps.app.goo.gl/xi9sdxCRa1xg1XcS6?g_st=aw',
-      receptionPlace: 'Recepción de Boda (Huancayo)',
-      receptionAddress: 'Después de la ceremonia en Ministerio En Honor Al Rey',
+      receptionPlace: 'Ministerio Evangélico “En Honor Al Rey” (Desde Huancayo)',
+      receptionAddress: 'Local de Recepciones “Rodriguez” — Av. Jorge Chávez N° 304 - Jauja',
       receptionMapUrl: 'https://maps.app.goo.gl/xi9sdxCRa1xg1XcS6?g_st=aw',
       isPlayingMusic: false,
       audioCtx: null,
@@ -951,21 +1095,38 @@
       elapsedSeconds: 0
     };
 
-    // Romantic melody notes (frequencies in Hz for a warm wedding progression: C - G - Am - F)
     const melodySequence = [
-      { freq: 523.25, dur: 0.7 }, // C5
-      { freq: 659.25, dur: 0.7 }, // E5
-      { freq: 783.99, dur: 1.0 }, // G5
-      { freq: 659.25, dur: 0.7 }, // E5
-      { freq: 587.33, dur: 0.7 }, // D5
-      { freq: 783.99, dur: 0.7 }, // G5
-      { freq: 880.00, dur: 1.0 }, // A5
-      { freq: 783.99, dur: 0.7 }, // G5
-      { freq: 698.46, dur: 0.7 }, // F5
-      { freq: 659.25, dur: 0.7 }, // E5
-      { freq: 587.33, dur: 0.8 }, // D5
-      { freq: 523.25, dur: 1.2 }  // C5
+      { freq: 523.25, dur: 0.7 },
+      { freq: 659.25, dur: 0.7 },
+      { freq: 783.99, dur: 1.0 },
+      { freq: 659.25, dur: 0.7 },
+      { freq: 587.33, dur: 0.7 },
+      { freq: 783.99, dur: 0.7 },
+      { freq: 880.00, dur: 1.0 },
+      { freq: 783.99, dur: 0.7 },
+      { freq: 698.46, dur: 0.7 },
+      { freq: 659.25, dur: 0.7 },
+      { freq: 587.33, dur: 0.8 },
+      { freq: 523.25, dur: 1.2 }
     ];
+
+    // --- 0. ENVELOPE WAX SEAL INTERACTION ---
+    function openWeddingEnvelope() {
+      const overlay = document.getElementById('envelopeOverlay');
+      overlay.classList.add('envelope-opening');
+      if (!weddingState.isPlayingMusic) {
+        toggleMusic();
+      }
+      setTimeout(function() {
+        overlay.classList.add('envelope-opened');
+      }, 650);
+    }
+
+    function replayWeddingEnvelope() {
+      const overlay = document.getElementById('envelopeOverlay');
+      overlay.classList.remove('envelope-opened', 'envelope-opening');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
 
     // --- 1. REAL-TIME COUNTDOWN TO JAN 2, 2027 10:00 AM ---
     function updateCountdown() {
@@ -1042,14 +1203,14 @@
       const iconEl = document.getElementById('musicHeartIcon');
 
       if (weddingState.isPlayingMusic) {
-        statusEl.textContent = 'Reproduciendo nuestra canción... 💚';
+        statusEl.textContent = 'Reproduciendo nuestra canción... 💙';
         iconEl.textContent = '⏸';
         playCurrentNote();
         if (weddingState.musicTimer) clearInterval(weddingState.musicTimer);
         weddingState.musicTimer = setInterval(playCurrentNote, 850);
       } else {
-        statusEl.textContent = 'En pausa · Toca el 💚 para reproducir';
-        iconEl.textContent = '💚';
+        statusEl.textContent = 'En pausa · Toca el 💙 para reproducir';
+        iconEl.textContent = '💙';
         if (weddingState.musicTimer) {
           clearInterval(weddingState.musicTimer);
           weddingState.musicTimer = null;
@@ -1088,12 +1249,12 @@
       const linkEl = document.getElementById('mapModalExternalLink');
 
       if (kind === 'ceremony') {
-        titleEl.textContent = 'Mapa de la Ceremonia (10:00 A.M.)';
+        titleEl.textContent = 'Ubicación del Matrimonio (10:00 A.M.)';
         placeEl.textContent = weddingState.ceremonyPlace;
         addrEl.textContent = weddingState.ceremonyAddress;
         linkEl.href = weddingState.ceremonyMapUrl;
       } else {
-        titleEl.textContent = 'Mapa de la Recepción (12:00 P.M.)';
+        titleEl.textContent = 'Amenización y Recepción';
         placeEl.textContent = weddingState.receptionPlace;
         addrEl.textContent = weddingState.receptionAddress;
         linkEl.href = weddingState.receptionMapUrl;
@@ -1141,9 +1302,9 @@
         'BEGIN:VEVENT',
         'DTSTART:20270102T150000Z',
         'DTEND:20270102T230000Z',
-        'SUMMARY:Boda de Dhersy & Dayana',
-        'DESCRIPTION:Celebración de nuestro matrimonio en ' + weddingState.ceremonyPlace + '. Mapa: ' + weddingState.ceremonyMapUrl,
-        'LOCATION:' + weddingState.ceremonyPlace + ' (Huancayo)',
+        'SUMMARY:Matrimonio Eclesiástico de Dhersy & Dayana',
+        'DESCRIPTION:Celebración en ' + weddingState.ceremonyPlace + ' (' + weddingState.ceremonyAddress + '). Ameniza: Ministerio Evangélico En Honor Al Rey. Mapa: ' + weddingState.ceremonyMapUrl,
+        'LOCATION:' + weddingState.ceremonyPlace + ' - ' + weddingState.ceremonyAddress,
         'END:VEVENT',
         'END:VCALENDAR'
       ].join('\r\n');
@@ -1185,9 +1346,9 @@
       const msg = document.getElementById('guestMessageInput').value.trim();
 
       const text =
-        '¡Hola Dhersy y Dayana! 💚\n' +
+        '¡Hola Dhersy y Dayana! 💙\n' +
         'Soy *' + guestName + '*.\n' +
-        'Confirmación para su boda (02/01/2027 - 10:00 a.m. en ' + weddingState.ceremonyPlace + '): ' + attend + '\n' +
+        'Confirmación para su Matrimonio Eclesiástico (02/01/2027 - 10:00 a.m. en ' + weddingState.ceremonyPlace + ', ' + weddingState.ceremonyAddress + '): ' + attend + '\n' +
         'Pases confirmados: ' + seats + '\n' +
         (msg ? 'Mensaje: ' + msg : '');
 
@@ -1257,7 +1418,7 @@
           text: url,
           width: 160,
           height: 160,
-          colorDark: '#2c3e2e',
+          colorDark: '#1e2b45',
           colorLight: '#ffffff'
         });
       } else {
