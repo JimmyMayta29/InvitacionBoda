@@ -102,23 +102,7 @@
       animation: gentleSway 6s infinite ease-in-out;
     }
 
-    .demo-badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 4px;
-      font-size: 10px;
-      font-weight: 600;
-      text-transform: uppercase;
-      letter-spacing: 0.06em;
-      background-color: #e6eef6;
-      color: #1e2b45;
-      border: 1px solid #b5c7d9;
-      padding: 2px 8px;
-      border-radius: 9999px;
-    }
-    body.hide-demo-badges .demo-badge {
-      display: none !important;
-    }
+
   </style>
 </head>
 <body class="min-h-screen antialiased selection:bg-[#748ba0]/25">
@@ -179,30 +163,7 @@
     </div>
   </div>
 
-  <!-- Top Utility Bar for the Couple -->
-  <header id="coupleToolbar" class="sticky top-0 z-40 bg-[#1e2b45]/95 backdrop-blur-md text-white px-3 py-2.5 shadow-md border-b border-white/10">
-    <div class="max-w-4xl mx-auto flex flex-wrap items-center justify-between gap-2 text-xs">
-      <div class="flex items-center gap-2">
-        <span class="inline-block w-2 h-2 rounded-full bg-[#d4af37] animate-pulse"></span>
-        <span class="font-medium">Invitación Oficial (Azul Marino &amp; Dorado):</span>
-        <span class="text-sky-200 hidden sm:inline">Dhersy &amp; Dayana · 02 Ene 2027</span>
-      </div>
-      <div class="flex flex-wrap items-center gap-1.5">
-        <button id="btnReplayEnvelope" type="button" onclick="replayWeddingEnvelope()" class="px-2.5 py-1 rounded-full bg-white/15 hover:bg-white/25 text-white transition">
-          ✉️ Ver Sobre
-        </button>
-        <button id="btnToggleBadges" type="button" onclick="toggleDemoBadges()" class="px-2.5 py-1 rounded-full bg-white/10 hover:bg-white/20 text-white transition flex items-center gap-1">
-          <span id="badgeToggleText">Ocultar etiquetas [Demo]</span>
-        </button>
-        <button id="btnOpenEditor" type="button" onclick="openModal('editorModal')" class="px-3 py-1 rounded-full bg-[#465369] hover:bg-[#5a6a85] border border-white/20 font-medium text-white transition shadow-sm">
-          ✏️ Editar Datos Demo
-        </button>
-        <button id="btnOpenQr" type="button" onclick="openModal('qrModal')" class="px-3 py-1 rounded-full bg-[#b68d2c] hover:bg-[#9e781d] font-medium text-white transition shadow-sm">
-          📱 Código QR y GitHub
-        </button>
-      </div>
-    </div>
-  </header>
+
 
   <!-- Main Invitation Container (Navy Blue, White Roses, Dusty Blue & Gold Elegance) -->
   <main class="max-w-xl mx-auto bg-[#faf9f7] watercolor-mist shadow-2xl border-x border-[#d8e0e8] relative overflow-hidden">
@@ -296,9 +257,10 @@
         <p class="font-serif-elegant italic text-lg text-[#1e2b45] mb-1">
           Nuestra Canción de Boda
         </p>
-        <p id="songTitleDisplay" class="text-xs text-[#465369] mb-3 tracking-wide">
-          🎵 Melodía Eclesiástica &amp; Cuerdas Románticas
+        <p id="songTitleDisplay" class="text-xs text-[#465369] mb-3 tracking-wide font-medium">
+          🎵 Que Te Quiero — “Un pacto con Dios hicimos tú y yo”
         </p>
+        <audio id="weddingAudioElement" loop preload="auto" src="audio/que_te_quiero_clip.mp3"></audio>
 
         <!-- Player Controls -->
         <div class="flex items-center justify-center gap-5 my-2">
@@ -586,7 +548,6 @@
           <p class="uppercase tracking-[0.22em] text-xs text-[#465369] font-semibold">
             Programa del día
           </p>
-          <span class="demo-badge">Horarios Referenciales</span>
         </div>
         <h2 class="font-script text-5xl text-[#1e2b45]">
           Itinerario de Boda
@@ -656,7 +617,6 @@
         <p class="uppercase tracking-[0.22em] text-xs text-[#465369] font-semibold">
           Sugerencia de atuendo
         </p>
-        <span class="demo-badge">Editable</span>
       </div>
       <h2 class="font-script text-5xl text-[#1e2b45] mb-2">
         Código de Vestimenta
@@ -706,7 +666,7 @@
           <img
             src="img/novios_mirador.jpg"
             alt="Dhersy y Dayana en el mirador"
-            class="w-full h-80 object-cover rounded-lg"
+            class="w-full h-72 object-cover rounded-lg"
           />
           <p class="font-serif-elegant italic text-sm text-[#1e2b45] mt-2">
             “Mejor son dos que uno...” — Eclesiastés 4:9
@@ -716,7 +676,17 @@
           <img
             src="img/novios_abrazo.jpg"
             alt="Retrato de Dhersy y Dayana"
-            class="w-full h-80 object-cover rounded-lg"
+            class="w-full h-72 object-cover rounded-lg"
+          />
+          <p class="font-serif-elegant italic text-sm text-[#1e2b45] mt-2">
+            “Un pacto con Dios hicimos tú y yo”
+          </p>
+        </div>
+        <div class="torn-photo-card bg-white p-2.5 shadow-md border border-[#cdd8e4] sm:col-span-2">
+          <img
+            src="img/novios_casual.jpg"
+            alt="Dhersy y Dayana juntos"
+            class="w-full h-72 object-cover rounded-lg"
           />
           <p class="font-serif-elegant italic text-sm text-[#1e2b45] mt-2">
             02 · Enero · 2027 · Jauja
@@ -733,10 +703,9 @@
           <h2 class="font-script text-4xl text-[#1e2b45]">
             Presente de Bodas
           </h2>
-          <span class="demo-badge">Cuentas Demo</span>
         </div>
         <p class="text-xs text-[#465369] mt-2 leading-relaxed">
-          Su presencia y sus oraciones son nuestro mejor regalo. Si desean hacernos llegar un presente adicional, pueden hacerlo aquí:
+          Su presencia y sus oraciones son nuestro mejor regalo. Si desean hacernos llegar un presente adicional por Yape, pueden hacerlo aquí:
         </p>
         <div class="mt-4">
           <button
@@ -749,31 +718,18 @@
           </button>
         </div>
 
-        <div id="giftDetailsPanel" class="hidden mt-4 pt-4 border-t border-[#eef2f6] text-left text-xs space-y-2.5">
-          <div class="flex items-center justify-between bg-[#faf9f7] p-2.5 rounded-lg border border-[#d8e0e8]">
+        <div id="giftDetailsPanel" class="mt-4 pt-4 border-t border-[#eef2f6] text-left text-xs space-y-2.5">
+          <div class="flex items-center justify-between bg-[#faf9f7] p-3.5 rounded-xl border border-[#cdd8e4] shadow-sm">
             <div>
-              <span class="font-semibold text-[#1e2b45] block">BCP Soles (Dhersy Reyna)</span>
-              <span id="accountBcpText" class="text-[#465369] font-mono">191-00000000-0-00</span>
-            </div>
-            <button
-              id="btnCopyBcp"
-              type="button"
-              onclick="copyTextValue('191-00000000-0-00', 'Cuenta BCP copiada')"
-              class="px-2.5 py-1 rounded bg-[#eef2f6] hover:bg-[#dbe4ee] text-[#1e2b45] font-medium"
-            >
-              Copiar
-            </button>
-          </div>
-          <div class="flex items-center justify-between bg-[#faf9f7] p-2.5 rounded-lg border border-[#d8e0e8]">
-            <div>
-              <span class="font-semibold text-[#1e2b45] block">Yape / Plin (Dayana Mayta)</span>
-              <span id="accountYapeText" class="text-[#465369] font-mono">999 888 777</span>
+              <span class="text-[11px] uppercase tracking-wider text-[#b68d2c] font-bold block">📱 Yape Oficial</span>
+              <span class="font-semibold text-[#1e2b45] text-sm block mt-0.5">Dayana Mayta Carhuancho</span>
+              <span id="accountYapeText" class="text-[#1e2b45] font-mono text-base font-bold tracking-wider">972 332 733</span>
             </div>
             <button
               id="btnCopyYape"
               type="button"
-              onclick="copyTextValue('999888777', 'Número de Yape copiado')"
-              class="px-2.5 py-1 rounded bg-[#eef2f6] hover:bg-[#dbe4ee] text-[#1e2b45] font-medium"
+              onclick="copyTextValue('972332733', 'Número de Yape 972 332 733 copiado')"
+              class="px-3.5 py-2 rounded-lg bg-[#1e2b45] hover:bg-[#2c3e63] text-white font-semibold transition shadow-sm"
             >
               Copiar
             </button>
@@ -902,138 +858,9 @@
     </section>
   </main>
 
-  <!-- MODAL 1: EDIT DATA IN REAL TIME -->
-  <div id="editorModal" class="hidden fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4">
-    <div class="bg-white rounded-2xl max-w-lg w-full max-h-[90vh] overflow-y-auto p-6 shadow-2xl border border-[#cdd8e4]">
-      <div class="flex items-center justify-between border-b pb-3 mb-4">
-        <h3 class="font-serif-elegant text-2xl font-bold text-[#1e2b45]">
-          ✏️ Personalizar Datos de la Invitación
-        </h3>
-        <button id="btnCloseEditor" type="button" onclick="closeModal('editorModal')" class="w-8 h-8 rounded-full bg-gray-100 hover:bg-gray-200 text-gray-600 flex items-center justify-center">
-          ✕
-        </button>
-      </div>
 
-      <div class="space-y-3 text-xs">
-        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-          <div>
-            <label for="editGroomFather" class="font-semibold text-gray-700 block mb-1">Papá del Novio:</label>
-            <input id="editGroomFather" type="text" value="Yuri Esrom Reyna Cárdenas" class="w-full px-3 py-2 border rounded-lg" />
-          </div>
-          <div>
-            <label for="editGroomMother" class="font-semibold text-gray-700 block mb-1">Mamá del Novio:</label>
-            <input id="editGroomMother" type="text" value="Huga Alicia Esteban Villar" class="w-full px-3 py-2 border rounded-lg" />
-          </div>
-        </div>
 
-        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-          <div>
-            <label for="editBrideFather" class="font-semibold text-gray-700 block mb-1">Papá de la Novia:</label>
-            <input id="editBrideFather" type="text" value="Rubén Mayta Flores" class="w-full px-3 py-2 border rounded-lg" />
-          </div>
-          <div>
-            <label for="editBrideMother" class="font-semibold text-gray-700 block mb-1">Mamá de la Novia:</label>
-            <input id="editBrideMother" type="text" value="Elisa Carhuancho Briceño" class="w-full px-3 py-2 border rounded-lg" />
-          </div>
-        </div>
 
-        <div>
-          <label for="editGodparents" class="font-semibold text-gray-700 block mb-1">Padrinos:</label>
-          <input id="editGodparents" type="text" value="Eduardo Escalera Mandujano & Gimena Soto Carhuancho" class="w-full px-3 py-2 border rounded-lg" />
-        </div>
-
-        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-          <div>
-            <label for="editCeremonyPlace" class="font-semibold text-gray-700 block mb-1">Local del Evento (10:00 a.m.):</label>
-            <input id="editCeremonyPlace" type="text" value="Local de Recepciones “Rodriguez”" class="w-full px-3 py-2 border rounded-lg" />
-          </div>
-          <div>
-            <label for="editReceptionPlace" class="font-semibold text-gray-700 block mb-1">Ministerio Musical:</label>
-            <input id="editReceptionPlace" type="text" value="“En Honor Al Rey”" class="w-full px-3 py-2 border rounded-lg" />
-          </div>
-        </div>
-
-        <div>
-          <label for="editWhatsappPhone" class="font-semibold text-gray-700 block mb-1">Número de WhatsApp para Confirmaciones (ej. 51999888777):</label>
-          <input id="editWhatsappPhone" type="text" value="51999888777" class="w-full px-3 py-2 border rounded-lg font-mono" />
-        </div>
-      </div>
-
-      <div class="mt-6 flex justify-end gap-2">
-        <button id="btnCancelEdit" type="button" onclick="closeModal('editorModal')" class="px-4 py-2 rounded-lg border text-xs font-medium">
-          Cancelar
-        </button>
-        <button id="btnSaveEdit" type="button" onclick="applyCustomData()" class="px-5 py-2 rounded-lg bg-[#1e2b45] hover:bg-[#151f33] text-white text-xs font-semibold">
-          Guardar Cambios en la Invitación
-        </button>
-      </div>
-    </div>
-  </div>
-
-  <!-- MODAL 2: QR CODE GENERATOR & GITHUB PAGES DEPLOYMENT GUIDE -->
-  <div id="qrModal" class="hidden fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4">
-    <div class="bg-white rounded-2xl max-w-lg w-full max-h-[90vh] overflow-y-auto p-6 shadow-2xl border border-[#cdd8e4]">
-      <div class="flex items-center justify-between border-b pb-3 mb-4">
-        <h3 class="font-serif-elegant text-2xl font-bold text-[#1e2b45]">
-          📱 Generador de Código QR y Despliegue en GitHub
-        </h3>
-        <button id="btnCloseQr" type="button" onclick="closeModal('qrModal')" class="w-8 h-8 rounded-full bg-gray-100 hover:bg-gray-200 text-gray-600 flex items-center justify-center">
-          ✕
-        </button>
-      </div>
-
-      <div class="space-y-4 text-xs text-gray-700">
-        <div>
-          <label for="qrUrlInput" class="font-semibold block mb-1">
-            Enlace web de tu invitación (URL de GitHub Pages o dominio):
-          </label>
-          <div class="flex gap-2">
-            <input
-              id="qrUrlInput"
-              type="url"
-              value="https://jimmymayta29.github.io/InvitacionBoda/"
-              class="flex-1 px-3 py-2 border rounded-lg font-mono text-xs"
-            />
-            <button
-              id="btnRegenerateQr"
-              type="button"
-              onclick="renderWeddingQr()"
-              class="px-3.5 py-2 rounded-lg bg-[#1e2b45] text-white font-semibold"
-            >
-              Actualizar QR
-            </button>
-          </div>
-        </div>
-
-        <!-- QR Container Card -->
-        <div class="bg-[#faf9f7] border border-[#cdd8e4] rounded-2xl p-5 text-center">
-          <p class="font-script text-3xl text-[#1e2b45]">Dhersy &amp; Dayana</p>
-          <p class="text-[11px] text-[#b68d2c] font-semibold uppercase tracking-widest mb-3">
-            02 · Enero · 2027 — Escanea tu Invitación
-          </p>
-          <div id="qrCodeBox" class="inline-flex items-center justify-center bg-white p-3 rounded-xl shadow-sm border border-[#d8e0e8] mx-auto"></div>
-          <p id="qrUrlCaption" class="text-[10px] font-mono text-gray-500 mt-2 break-all">
-            https://jimmymayta29.github.io/InvitacionBoda/
-          </p>
-          <div class="mt-3 flex flex-wrap justify-center gap-2">
-            <button id="btnDownloadQrPng" type="button" onclick="downloadQrImage()" class="px-3.5 py-1.5 rounded-lg bg-[#b68d2c] hover:bg-[#9e781d] text-white text-xs font-semibold transition shadow-sm">
-              ⬇️ Descargar Imagen QR (.PNG)
-            </button>
-            <button id="btnDownloadIndexHtml" type="button" onclick="downloadSelfContainedIndex()" class="px-3.5 py-1.5 rounded-lg bg-[#1e2b45] hover:bg-[#151f33] text-white text-xs font-semibold transition shadow-sm">
-              ⬇️ Descargar index.html listo para GitHub
-            </button>
-          </div>
-        </div>
-
-        <!-- GitHub Pages Quick Steps -->
-        <div class="bg-[#eef2f6] rounded-xl p-4 space-y-1.5">
-          <h4 class="font-semibold text-[#1e2b45] text-sm">🚀 Cómo actualizarla en tu repositorio InvitacionBoda:</h4>
-          <p>1. Entra a tu repositorio <strong>JimmyMayta29/InvitacionBoda</strong> en GitHub.</p>
-          <p>2. Sube el archivo <code class="bg-white px-1.5 py-0.5 rounded">index.html</code> (o los archivos descomprimidos del ZIP) y haz clic en <strong>Commit changes</strong>.</p>
-          <p>3. En <strong>Settings → Pages</strong> asegúrate de tener seleccionada la rama <code class="bg-white px-1.5 py-0.5 rounded">main</code>.</p>
-        </div>
-      </div>
-    </div>
   </div>
 
   <!-- MODAL 3: INTERACTIVE MAP PREVIEW -->
@@ -1081,7 +908,7 @@
     // --- STATE & CONFIGURATION ---
     const weddingState = {
       targetDateISO: '2027-01-02T10:00:00-05:00',
-      whatsappNumber: '51999888777',
+      whatsappNumber: '51972332733',
       ceremonyPlace: 'Local de Recepciones “Rodriguez”',
       ceremonyAddress: 'Av. Jorge Chávez N° 304 - Jauja',
       ceremonyMapUrl: 'https://maps.app.goo.gl/xi9sdxCRa1xg1XcS6?g_st=aw',
@@ -1196,21 +1023,51 @@
       document.getElementById('musicTimeText').textContent = mins + ':' + secs;
     }
 
+    function formatSeconds(sec) {
+      const s = Math.max(0, Math.floor(sec || 0));
+      const m = Math.floor(s / 60);
+      const r = String(s % 60).padStart(2, '0');
+      return m + ':' + r;
+    }
+
+    function syncAudioProgress() {
+      const audioEl = document.getElementById('weddingAudioElement');
+      if (!audioEl) return;
+      const cur = audioEl.currentTime || 0;
+      const dur = audioEl.duration || 62;
+      const pct = Math.min(100, (cur / dur) * 100).toFixed(1);
+      document.getElementById('musicProgressBar').style.width = pct + '%';
+      document.getElementById('musicTimeText').textContent = formatSeconds(cur) + ' / ' + formatSeconds(dur);
+    }
+
     function toggleMusic() {
-      ensureAudioContext();
-      weddingState.isPlayingMusic = !weddingState.isPlayingMusic;
+      const audioEl = document.getElementById('weddingAudioElement');
       const statusEl = document.getElementById('musicStatusText');
       const iconEl = document.getElementById('musicHeartIcon');
 
-      if (weddingState.isPlayingMusic) {
-        statusEl.textContent = 'Reproduciendo nuestra canción... 💙';
+      if (!weddingState.isPlayingMusic) {
+        weddingState.isPlayingMusic = true;
+        statusEl.textContent = 'Sonando: Que Te Quiero (Coro) 💙';
         iconEl.textContent = '⏸';
-        playCurrentNote();
-        if (weddingState.musicTimer) clearInterval(weddingState.musicTimer);
-        weddingState.musicTimer = setInterval(playCurrentNote, 850);
+        if (audioEl) {
+          audioEl.ontimeupdate = syncAudioProgress;
+          const playPromise = audioEl.play();
+          if (playPromise && typeof playPromise.catch === 'function') {
+            playPromise.catch(function() {
+              ensureAudioContext();
+              playCurrentNote();
+              if (weddingState.musicTimer) clearInterval(weddingState.musicTimer);
+              weddingState.musicTimer = setInterval(playCurrentNote, 850);
+            });
+          }
+        }
       } else {
+        weddingState.isPlayingMusic = false;
         statusEl.textContent = 'En pausa · Toca el 💙 para reproducir';
         iconEl.textContent = '💙';
+        if (audioEl) {
+          audioEl.pause();
+        }
         if (weddingState.musicTimer) {
           clearInterval(weddingState.musicTimer);
           weddingState.musicTimer = null;
@@ -1219,25 +1076,26 @@
     }
 
     function restartMusic() {
-      weddingState.noteIndex = 0;
-      weddingState.elapsedSeconds = 0;
-      document.getElementById('musicProgressBar').style.width = '0%';
-      document.getElementById('musicTimeText').textContent = '0:00';
+      const audioEl = document.getElementById('weddingAudioElement');
+      if (audioEl) {
+        audioEl.currentTime = 0;
+        syncAudioProgress();
+      }
       if (!weddingState.isPlayingMusic) {
         toggleMusic();
-      } else {
-        playCurrentNote();
       }
-      showToast('Canción reiniciada desde el principio');
+      showToast('Canción reiniciada desde el coro principal');
     }
 
     function skipMusicNote() {
-      ensureAudioContext();
-      weddingState.noteIndex = (weddingState.noteIndex + 2) % melodySequence.length;
+      const audioEl = document.getElementById('weddingAudioElement');
+      if (audioEl) {
+        const dur = audioEl.duration || 62;
+        audioEl.currentTime = (audioEl.currentTime + 10) % dur;
+        syncAudioProgress();
+      }
       if (!weddingState.isPlayingMusic) {
         toggleMusic();
-      } else {
-        playCurrentNote();
       }
     }
 
@@ -1356,111 +1214,18 @@
       window.open(waUrl, '_blank', 'noopener,noreferrer');
     }
 
-    // --- 7. CUSTOMIZE DEMO DATA & QR CODE ---
-    function toggleDemoBadges() {
-      document.body.classList.toggle('hide-demo-badges');
-      const hidden = document.body.classList.contains('hide-demo-badges');
-      document.getElementById('badgeToggleText').textContent = hidden
-        ? 'Mostrar etiquetas [Demo]'
-        : 'Ocultar etiquetas [Demo]';
-      showToast(hidden ? 'Modo Vista Invitado activado' : 'Etiquetas Demo visibles');
-    }
-
     function openModal(modalId) {
-      document.getElementById(modalId).classList.remove('hidden');
-      if (modalId === 'qrModal') {
-        renderWeddingQr();
+      const modal = document.getElementById(modalId);
+      if (modal) {
+        modal.classList.remove('hidden');
       }
     }
 
     function closeModal(modalId) {
-      document.getElementById(modalId).classList.add('hidden');
-    }
-
-    function applyCustomData() {
-      const groomFather = document.getElementById('editGroomFather').value.trim();
-      const groomMother = document.getElementById('editGroomMother').value.trim();
-      const brideFather = document.getElementById('editBrideFather').value.trim();
-      const brideMother = document.getElementById('editBrideMother').value.trim();
-      const godparents = document.getElementById('editGodparents').value.trim();
-      const ceremonyPlace = document.getElementById('editCeremonyPlace').value.trim();
-      const receptionPlace = document.getElementById('editReceptionPlace').value.trim();
-      const whatsapp = document.getElementById('editWhatsappPhone').value.trim();
-
-      if (groomFather) document.getElementById('displayGroomFather').textContent = groomFather;
-      if (groomMother) document.getElementById('displayGroomMother').textContent = groomMother;
-      if (brideFather) document.getElementById('displayBrideFather').textContent = brideFather;
-      if (brideMother) document.getElementById('displayBrideMother').textContent = brideMother;
-      if (godparents) document.getElementById('displayGodparents').textContent = godparents;
-      if (ceremonyPlace) {
-        weddingState.ceremonyPlace = ceremonyPlace;
-        document.getElementById('displayCeremonyPlace').textContent = ceremonyPlace;
+      const modal = document.getElementById(modalId);
+      if (modal) {
+        modal.classList.add('hidden');
       }
-      if (receptionPlace) {
-        weddingState.receptionPlace = receptionPlace;
-        document.getElementById('displayReceptionPlace').textContent = receptionPlace;
-      }
-      if (whatsapp) {
-        weddingState.whatsappNumber = whatsapp.replace(/\D/g, '');
-      }
-
-      closeModal('editorModal');
-      showToast('¡Datos actualizados en la invitación!');
-    }
-
-    function renderWeddingQr() {
-      const url = document.getElementById('qrUrlInput').value.trim() || 'https://jimmymayta29.github.io/InvitacionBoda/';
-      document.getElementById('qrUrlCaption').textContent = url;
-      const box = document.getElementById('qrCodeBox');
-      box.innerHTML = '';
-      if (typeof QRCode !== 'undefined') {
-        new QRCode(box, {
-          text: url,
-          width: 160,
-          height: 160,
-          colorDark: '#1e2b45',
-          colorLight: '#ffffff'
-        });
-      } else {
-        box.textContent = 'QR listo para: ' + url;
-      }
-    }
-
-    function downloadQrImage() {
-      const box = document.getElementById('qrCodeBox');
-      const img = box.querySelector('img');
-      const canvas = box.querySelector('canvas');
-      let dataUrl = '';
-      if (canvas) {
-        dataUrl = canvas.toDataURL('image/png');
-      } else if (img && img.src) {
-        dataUrl = img.src;
-      }
-      if (!dataUrl) {
-        showToast('Primero genera el código QR');
-        return;
-      }
-      const a = document.createElement('a');
-      a.href = dataUrl;
-      a.download = 'QR-Boda-Dhersy-y-Dayana.png';
-      document.body.appendChild(a);
-      a.click();
-      document.body.removeChild(a);
-      showToast('Código QR descargado en PNG');
-    }
-
-    function downloadSelfContainedIndex() {
-      const htmlContent = '<!DOCTYPE html>\n' + document.documentElement.outerHTML;
-      const blob = new Blob([htmlContent], { type: 'text/html;charset=utf-8' });
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement('a');
-      a.href = url;
-      a.download = 'index.html';
-      document.body.appendChild(a);
-      a.click();
-      document.body.removeChild(a);
-      URL.revokeObjectURL(url);
-      showToast('Archivo index.html descargado para subir a GitHub');
     }
 
     function showToast(msg) {
