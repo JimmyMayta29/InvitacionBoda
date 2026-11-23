@@ -245,9 +245,9 @@
       <div class="relative mx-auto max-w-md my-6">
         <div class="torn-photo-card shadow-xl bg-white p-2.5 border border-[#d8e0e8]">
           <img
-            src="img/novios_formal.jpg"
+            src="img/novios_paseo.jpg"
             alt="Dhersy y Dayana"
-            class="w-full h-72 sm:h-80 object-cover rounded-lg"
+            class="w-full h-80 sm:h-96 object-cover object-top rounded-lg"
           />
         </div>
       </div>
@@ -665,8 +665,8 @@
       <div class="grid grid-cols-1 sm:grid-cols-2 gap-6 max-w-md mx-auto">
         <div class="torn-photo-card bg-white p-2.5 shadow-md border border-[#cdd8e4]">
           <img
-            src="img/novios_mirador.jpg"
-            alt="Dhersy y Dayana en el mirador"
+            src="img/novios_abrazo_piedra.jpg"
+            alt="Dhersy y Dayana"
             class="w-full h-72 object-cover rounded-lg"
           />
           <p class="font-serif-elegant italic text-sm text-[#1e2b45] mt-2">
@@ -676,56 +676,13 @@
 
         <div class="torn-photo-card bg-white p-2.5 shadow-md border border-[#cdd8e4]">
           <img
-            src="img/novios_casual.jpg"
-            alt="Dhersy y Dayana juntos"
+            src="img/novios_laguna.jpg"
+            alt="Dhersy y Dayana en la laguna"
             class="w-full h-72 object-cover rounded-lg"
           />
           <p class="font-serif-elegant italic text-sm text-[#1e2b45] mt-2">
             02 · Enero · 2027 · Jauja
           </p>
-        </div>
-      </div>
-    </section>
-
-    <!-- 8. GIFTS / LLUVIA DE SOBRES -->
-    <section id="regalos" class="py-10 px-6 text-center">
-      <div class="max-w-md mx-auto bg-white border border-[#cdd8e4] rounded-2xl p-6 shadow-sm">
-        <div class="text-3xl mb-2">🎁</div>
-        <div class="flex items-center justify-center gap-2">
-          <h2 class="font-script text-4xl text-[#1e2b45]">
-            Presente de Bodas
-          </h2>
-        </div>
-        <p class="text-xs text-[#465369] mt-2 leading-relaxed">
-          Su presencia y sus oraciones son nuestro mejor regalo. Si desean hacernos llegar un presente adicional por Yape, pueden hacerlo aquí:
-        </p>
-        <div class="mt-4">
-          <button
-            id="btnToggleGiftDetails"
-            type="button"
-            onclick="toggleGiftBox()"
-            class="px-5 py-2 rounded-full border border-[#1e2b45] text-[#1e2b45] hover:bg-[#eef2f6] text-xs font-semibold uppercase tracking-wider transition"
-          >
-            Ver números de cuenta / Yape
-          </button>
-        </div>
-
-        <div id="giftDetailsPanel" class="mt-4 pt-4 border-t border-[#eef2f6] text-left text-xs space-y-2.5">
-          <div class="flex items-center justify-between bg-[#faf9f7] p-3.5 rounded-xl border border-[#cdd8e4] shadow-sm">
-            <div>
-              <span class="text-[11px] uppercase tracking-wider text-[#b68d2c] font-bold block">📱 Yape Oficial</span>
-              <span class="font-semibold text-[#1e2b45] text-sm block mt-0.5">Dayana Kristy Mayta Carhuancho</span>
-              <span id="accountYapeText" class="text-[#1e2b45] font-mono text-base font-bold tracking-wider">972 332 733</span>
-            </div>
-            <button
-              id="btnCopyYape"
-              type="button"
-              onclick="copyTextValue('972332733', 'Número de Yape 972 332 733 copiado')"
-              class="px-3.5 py-2 rounded-lg bg-[#1e2b45] hover:bg-[#2c3e63] text-white font-semibold transition shadow-sm"
-            >
-              Copiar
-            </button>
-          </div>
         </div>
       </div>
     </section>
@@ -1110,12 +1067,6 @@
         linkEl.href = weddingState.receptionMapUrl;
       }
       openModal('mapModal');
-    }
-
-    // --- 4. GIFTS & CLIPBOARD ---
-    function toggleGiftBox() {
-      const panel = document.getElementById('giftDetailsPanel');
-      panel.classList.toggle('hidden');
     }
 
     function copyTextValue(text, message) {
